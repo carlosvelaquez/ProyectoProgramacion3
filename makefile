@@ -1,2 +1,2 @@
-run: texto.h texto.cpp main.cpp
-	g++ texto.cpp main.cpp -lSDL -lSDL_image -lSDL_ttf -o run -g
+run: Texto.h Texto.cpp mainold.cpp
+	g++ Texto.cpp mainold.cpp -lSDL -lSDL_image -lSDL_ttf -o run -g
