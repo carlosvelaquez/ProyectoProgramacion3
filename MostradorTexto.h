@@ -2,7 +2,7 @@
 #include "ElementoGUI.h"
 #include "Texto.h"
 
-class DesplazadorTexto : public ElementoGUI{
+class MostradorTexto : public ElementoGUI{
 private:
   Texto texto;
   Sonido sonido;

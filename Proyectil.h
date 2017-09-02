@@ -1,23 +1,40 @@
 #pragma once
 #include "Sprite.h"
+#include <thread>
+#include <chrono>
+
+using namespace std;
 
 class Proyectil{
 private:
   Sprite sprite;
-  int velocidad;
+  int anchura;
+  int altura;
+  int velocidadX;
+  int velocidadY;
   int posicionX;
   int posicionY;
-  int direccion;
+  long vida;
+  bool activo = false;
+
 public:
+  Proyectil(Sprite, int, int, int, int);
+  Proyectil(Sprite, int, int);
+
   Sprite getSprite();
-  int getVelocidad();
+  int getAnchura();
+  int getAltura();
+  int getVelocidadX();
+  int getVelocidadY();
   int getPosicionX();
   int getPosicionY();
-  int getDireccion();
 
   void setSprite(Sprite);
-  void setVelocidad(int);
+  void setVelocidadX(int);
+  void setVelocidadY(int);
   void setPosicionX(int);
   void setPosicionY(int);
-  void setDireccion(int);
+
+  void activar();
+  void ejecutar();
 };
