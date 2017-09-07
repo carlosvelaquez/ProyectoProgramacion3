@@ -69,6 +69,7 @@ void Proyectil::setVelocidadY(int velY){
 void Proyectil::activar(){
   activo = true;
   thread ejecucion (ejecutar);
+  ejecucion.detach();
 }
 
 void Proyectil::ejecutar(){

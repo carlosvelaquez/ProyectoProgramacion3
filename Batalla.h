@@ -3,19 +3,28 @@
 #include "Imagen.h"
 
 class Batalla{
+
 private:
   Enemigo enemigo;
   Imagen fondo;
   Sonido musica;
-  bool termino;
+  Sprite* decoraciones;
+  bool activa;
+
 public:
+  Batalla(Enemigo, Imagen, Sonido, Sprite*);
+
   Enemigo getEnemigo();
   Imagen getFondo();
   Sonido getMusica();
-  bool termino();
+  Sprite* getDecoraciones();
+  bool isActiva();
 
   void setEnemigo(Enemigo);
   void setFondo(Imagen);
   void setMusica(Sonido);
-  void setTermino(bool);
+  void setDecoraciones(Sprite*);
+  void setActiva(bool);
+
+  ~Batalla();
 };

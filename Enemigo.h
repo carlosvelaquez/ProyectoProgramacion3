@@ -17,10 +17,12 @@ private:
   Ataque* ataques;
   int cantidadAtaques;
   Texto* dialogo;
-  double flinch;
-  double velocidadFlinch;
+  int flinch;
+  int velocidadFlinch;
 
 public:
+  Enemigo(int, int, int, string, Sprite, Sonido, Ataque*, int, Texto*, int, int);
+
   int getAtaque();
   int getDefensa();
   int getHP();
@@ -30,8 +32,8 @@ public:
   Ataque* getAtaques();
   int getCantidadAtaques();
   Texto* getDialogo();
-  double getFlinch();
-  double getVelocidadFlinch();
+  int getFlinch();
+  int getVelocidadFlinch();
 
   void setAtaque(int);
   void setDefensa(int);
@@ -42,6 +44,8 @@ public:
   void setAtaques(Ataque*, int);
   void setAtaques(Ataque*);
   void setDialogo(Texto*);
-  void setFlinch(double);
-  void setVelocidadFlinch(double);
+  void setFlinch(int);
+  void setVelocidadFlinch(int);
+
+  ~Enemigo();
 };

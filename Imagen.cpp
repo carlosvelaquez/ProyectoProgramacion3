@@ -12,8 +12,10 @@ bool Imagen::recargar(){
   if (imagenCargada != NULL) {
     superfice = SDL_DisplayFormat(imagenCargada);
     SDL_FreeSurface(imagenCargada);
+    cargada = true;
   }else{
     std::cout << "[IMAGEN] Imagen en " << ruta << "no pudo ser cargada." << '\n';
+    cargada = false;
     return false;
   }
 

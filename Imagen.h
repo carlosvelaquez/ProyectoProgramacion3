@@ -12,7 +12,7 @@ public:
   Imagen(string);
 
   string getRuta();
-  SDL_Surface* getSuperficie();
+  SDL_Surface* getSuperficie();z
   void setRuta(string);
   bool recargar();
 
