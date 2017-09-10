@@ -1,5 +1,10 @@
 #include "Sprite.h"
 
+Sprite::Sprite(){
+  Imagen nFuente("./assets/souls.png");
+  fuente = nFuente;
+}
+
 Sprite::Sprite(string nImagenFuente){
   Imagen nFuente(nImagenFuente);
   fuente = nFuente;
@@ -36,6 +41,10 @@ void Sprite::setClip(int x, int y){
   nClip.y = y;
 
   clip = &nClip;
+}
+
+SDL_Surface* Sprite::toSuperficie(){
+  return fuente.toSuperficie();
 }
 
 Sprite::~Sprite(){

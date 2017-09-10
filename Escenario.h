@@ -6,17 +6,22 @@
 class Escenario{
 private:
   Imagen fondo;
-  HUD hud;
+  HUD* hud;
   int tipo;
-  Espacio* espacio = NULL;
-public:
-  Imagen getFondo();
-  HUD getHUD();
-  int getTipo();
-  Espacio getEspacio();
+  Espacio* espacio;
 
-  void setFondo(Image);
-  void setHUD(HUD);
+public:
+  Escenario();
+
+  Imagen getFondo();
+  HUD* getHUD();
+  int getTipo();
+  Espacio* getEspacio();
+
+  void setFondo(Imagen);
+  void setHUD(HUD*);
   void setTipo(int);
   void setEspacio(Espacio*);
+
+  ~Escenario();
 };

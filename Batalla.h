@@ -7,7 +7,7 @@ class Batalla{
 private:
   Enemigo enemigo;
   Imagen fondo;
-  Sonido musica;
+  Musica* musica;
   Sprite* decoraciones;
   bool activa;
 

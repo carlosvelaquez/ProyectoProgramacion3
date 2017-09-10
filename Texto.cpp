@@ -1,4 +1,4 @@
-#include "texto.h"
+#include "Texto.h"
 
 Texto::Texto(){
   texto = "Placeholder";

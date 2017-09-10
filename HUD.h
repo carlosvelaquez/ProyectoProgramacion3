@@ -10,7 +10,7 @@ private:
 public:
   HUD();
   HUD(vector<ElementoGUI>);
-  addElemento(ElementoGUI*);
-  removeElemento(ElementoGUI*);
-  removeElemento(int);
-}
+  void addElemento(ElementoGUI*);
+  void removeElemento(ElementoGUI*);
+  void removeElemento(int);
+};

@@ -1,11 +1,13 @@
 #pragma once
 
 class ElementoGUI{
-private:
+
+protected:
   int anchura;
   int altura;
   int posicionX;
   int posicionY;
+
 public:
   int getAnchura();
   int getAltura();
@@ -16,4 +18,6 @@ public:
   void setAltura(int);
   void setPosicionX(int);
   void setPosicionY(int);
+
+  virtual SDL_Surface* toSuperficie() = 0;
 };

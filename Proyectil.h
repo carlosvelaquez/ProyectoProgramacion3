@@ -18,7 +18,7 @@ private:
   bool activo = false;
 
 public:
-  Proyectil(Sprite, int, int, int, int);
+  Proyectil(Sprite, int, int, int, int, long);
   Proyectil(Sprite, int, int);
 
   Sprite getSprite();

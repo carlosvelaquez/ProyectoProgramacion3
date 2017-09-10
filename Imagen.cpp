@@ -1,5 +1,10 @@
 #include "Imagen.h"
 
+Imagen::Imagen(){
+  ruta = "./assets/soul.png";
+  cargada = recargar();
+}
+
 Imagen::Imagen(string nRuta){
   ruta = nRuta;
   cargada = recargar();
@@ -10,7 +15,7 @@ bool Imagen::recargar(){
   imagenCargada = IMG_Load(ruta.c_str());
 
   if (imagenCargada != NULL) {
-    superfice = SDL_DisplayFormat(imagenCargada);
+    superficie = SDL_DisplayFormat(imagenCargada);
     SDL_FreeSurface(imagenCargada);
     cargada = true;
   }else{
@@ -22,6 +27,13 @@ bool Imagen::recargar(){
   return true;
 }
 
+SDL_Surface* Imagen::toSuperficie(){
+  return superficie;
+}
+
 Imagen::~Imagen(){
-  delete superficie;
+  if (superficie != NULL) {
+    //SDL_FreeSurface(superficie);
+    std::cout << "[IMAGEN] Imagen cargada de " << ruta << " destruida." << '\n';
+  }
 }

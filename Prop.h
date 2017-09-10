@@ -8,8 +8,11 @@ private:
   int posicionX;
   int posicionY;
   Sprite sprite;
-  bool esSolido;
+  bool solido;
+  
 public:
+  Prop(int, int, int, int, Sprite, bool);
+
   int getAltura();
   int getAnchura();
   int getPosicionX();

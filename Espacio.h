@@ -4,15 +4,21 @@
 
 class Espacio{
 private:
-  Prop** espacio;
+  vector<Prop> props;
   int altura;
   int anchura;
+
 public:
-  Prop** getEspacio();
+  Espacio(int, int);
+  Espacio(int, int, vector<Prop>);
+
+  vector<Prop> getProps();
   int getAltura();
   int getAnchura();
 
-  void setEspacio(Prop**);
+  void setProps(vector<Prop>);
   void setAltura(int);
   void setAnchura(int);
+
+  void addProp(Prop);
 };

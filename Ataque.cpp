@@ -1,6 +1,6 @@
 #include "Ataque.h"
 
-Ataque::Ataque(int nCantidadProyectiles, int** nPosiciones, int** nVelocidades, bool nAleatorio, Sprite nSpriteProyectiles, long nVidaProyectiles, long nDuracion, long nSleepProyectiles, long nSleepRondas){
+Ataque::Ataque(int nCantidadProyectiles, int** nPosiciones, int** nVelocidades, bool nAleatorio, Sprite nSpriteProyectiles, long nVidaProyectiles, long nDuracion, long nSleepProyectiles, long nSleepRondas, long nSleepInicial){
   cantidadProyectiles = nCantidadProyectiles;
   posiciones = nPosiciones;
   velocidades = nVelocidades;
@@ -9,6 +9,7 @@ Ataque::Ataque(int nCantidadProyectiles, int** nPosiciones, int** nVelocidades, 
   vidaProyectiles = nVidaProyectiles;
   sleepProyectiles = nSleepProyectiles;
   sleepRondas = nSleepRondas;
+  sleepInicial = nSleepInicial;
 }
 
 int Ataque::getCantidadProyectiles(){
@@ -33,10 +34,6 @@ bool Ataque::isAleatorio(){
 
 Sprite* Ataque::getDecoraciones(){
   return decoraciones;
-}
-
-Proyectil Ataque::getProyectil(){
-  return Proyectil;
 }
 
 long Ataque::getVidaProyectiles(){
@@ -108,7 +105,7 @@ void Ataque::setSleepInicial(long nSleepInicial){
 
 void Ataque::activar(){
   activo = true;
-  thread ejecucion (ejecutar);
+  thread ejecucion (&Ataque::ejecutar, this);
   ejecucion.detach();
 }
 
@@ -116,7 +113,7 @@ void Ataque::ejecutar(){
   int cont = 0;
   int* contador = &cont;
 
-  Thread cronom (cronometro, contador);
+  thread cronom (&Ataque::cronometro, this, contador);
 
   while (*contador < duracion) {
     for (int i = 0; i < cantidadProyectiles; i++) {

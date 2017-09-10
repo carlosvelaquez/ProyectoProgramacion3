@@ -25,7 +25,7 @@ private:
   vector<Proyectil> proyectilesActivos;
 
 public:
-  Ataque(int, int**, int**, Sprite*, int**, bool, Sprite, long, long, long, long);
+  Ataque(int, int**, int**, bool, Sprite, long, long, long, long, long);
 
   int getCantidadProyectiles();
   int** getPosiciones();
@@ -55,7 +55,7 @@ public:
 
   void activar();
   void ejecutar();
-  void cronometro(int**);
+  void cronometro(int*);
 
   ~Ataque();
 };
