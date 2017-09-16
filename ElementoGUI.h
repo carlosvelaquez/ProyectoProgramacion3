@@ -1,12 +1,13 @@
 #pragma once
+#include "SDL/SDL.h"
+#include "Imagen.h"
 
 class ElementoGUI{
-
 protected:
-  int anchura;
-  int altura;
-  int posicionX;
-  int posicionY;
+  int anchura = 0;
+  int altura = 0;
+  int posicionX = 0;
+  int posicionY = 0;
 
 public:
   int getAnchura();
@@ -20,4 +21,5 @@ public:
   void setPosicionY(int);
 
   virtual SDL_Surface* toSuperficie() = 0;
+  virtual bool refrescar() = 0;
 };

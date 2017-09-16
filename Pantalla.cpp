@@ -4,9 +4,6 @@ Pantalla::Pantalla(int nAltura, int nAnchura){
   altura = nAltura;
   anchura = nAnchura;
 
-  if(SDL_Init(SDL_INIT_EVERYTHING) == -1){
-    std::cout << "[PANTALLA] Error al inicializar SDL." << '\n';
-  }else{
     superficie = SDL_SetVideoMode(anchura, altura, 32, SDL_SWSURFACE);
     if (superficie == NULL) {
       std::cout << "[PANTALLA] Error al inicializar pantalla." << '\n';
@@ -14,7 +11,6 @@ Pantalla::Pantalla(int nAltura, int nAnchura){
       SDL_WM_SetCaption("Progratale Pre-Alpha v0.1", NULL);
       std::cout << "[PANTALLA] Pantalla inicializada exitosamente." << '\n';
     }
-  }
 
 }
 
@@ -58,10 +54,18 @@ bool Pantalla::refrescar(){
         }
       }
 
+    }else{
+      //std::cout << "[PANTALLA] El escenario cargado no tiene un espacio." << '\n';
+    }
+
+    if (escenario->getHUD() != NULL) {
       //TODO: Aplicar HUD
 
-    }else{
-      std::cout << "[PANTALLA] El escenario cargado no tiene un espacio." << '\n';
+      vector<ElementoGUI*> elementos = escenario->getHUD()->getElementos();
+      for (int i = 0; i < elementos.size(); i++) {
+        ElementoGUI* elem = elementos[i];
+        aplicarSuperficie(elem->toSuperficie(), elem->getPosicionX(), elem->getPosicionY());
+      }
     }
   }else{
     std::cout << "[PANTALLA] No hay escenario que cargar." << '\n';

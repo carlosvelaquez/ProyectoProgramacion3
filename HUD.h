@@ -6,11 +6,14 @@ using namespace std;
 
 class HUD{
 private:
-  vector<ElementoGUI> elementos;
+  vector<ElementoGUI*> elementos;
 public:
   HUD();
-  HUD(vector<ElementoGUI>);
+  HUD(vector<ElementoGUI*>);
   void addElemento(ElementoGUI*);
-  void removeElemento(ElementoGUI*);
-  void removeElemento(int);
+
+  vector<ElementoGUI*> getElementos();
+  void setElementos(vector<ElementoGUI*>);
+  //void removeElemento(ElementoGUI*);
+  //void removeElemento(int);
 };

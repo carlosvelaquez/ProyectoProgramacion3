@@ -1,6 +1,8 @@
 #include "Runner.h"
+#include <X11/Xlib.h>
 
 int main(){
+  XInitThreads();
   Runner runner;
   int codigo = runner.run();
 

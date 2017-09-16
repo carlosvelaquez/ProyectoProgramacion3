@@ -1,6 +1,6 @@
 #include "Ataque.h"
 
-Ataque::Ataque(int nCantidadProyectiles, int** nPosiciones, int** nVelocidades, bool nAleatorio, Sprite nSpriteProyectiles, long nVidaProyectiles, long nDuracion, long nSleepProyectiles, long nSleepRondas, long nSleepInicial){
+Ataque::Ataque(int nCantidadProyectiles, int** nPosiciones, int** nVelocidades, bool nAleatorio, Sprite nSpriteProyectiles, long nVidaProyectiles, long nDuracion, long nSleepProyectiles, long nSleepRondas, long nSleepInicial, int nAnchura, int nAltura){
   cantidadProyectiles = nCantidadProyectiles;
   posiciones = nPosiciones;
   velocidades = nVelocidades;
@@ -10,6 +10,8 @@ Ataque::Ataque(int nCantidadProyectiles, int** nPosiciones, int** nVelocidades, 
   sleepProyectiles = nSleepProyectiles;
   sleepRondas = nSleepRondas;
   sleepInicial = nSleepInicial;
+  anchuraTablero = nAnchura;
+  alturaTablero = nAltura;
 }
 
 int Ataque::getCantidadProyectiles(){
@@ -143,6 +145,24 @@ void Ataque::cronometro(int* tiempo){
     this_thread::sleep_for(chrono::milliseconds(1));
   }
 }
+
+int Ataque::getAnchuraTablero(){
+  return anchuraTablero;
+}
+
+int Ataque::getAlturaTablero(){
+  return alturaTablero;
+}
+
+
+void Ataque::setAnchuraTablero(int nAnchura){
+  anchuraTablero = nAnchura;
+}
+
+void Ataque::setAlturaTablero(int nAltura){
+  alturaTablero = nAltura;
+}
+
 
 Ataque::~Ataque(){
   for (int i = 0; i < cantidadProyectiles; i++) {

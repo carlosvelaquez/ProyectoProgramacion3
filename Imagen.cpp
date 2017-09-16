@@ -34,6 +34,6 @@ SDL_Surface* Imagen::toSuperficie(){
 Imagen::~Imagen(){
   if (superficie != NULL) {
     //SDL_FreeSurface(superficie);
-    std::cout << "[IMAGEN] Imagen cargada de " << ruta << " destruida." << '\n';
+    //std::cout << "[IMAGEN] Imagen cargada de " << ruta << " destruida." << '\n';
   }
 }

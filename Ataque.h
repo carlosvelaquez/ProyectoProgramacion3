@@ -22,10 +22,11 @@ private:
   long sleepInicial;
   bool activo;
 
-  vector<Proyectil> proyectilesActivos;
+  int anchuraTablero;
+  int alturaTablero;
 
 public:
-  Ataque(int, int**, int**, bool, Sprite, long, long, long, long, long);
+  Ataque(int, int**, int**, bool, Sprite, long, long, long, long, long, int, int);
 
   int getCantidadProyectiles();
   int** getPosiciones();
@@ -56,6 +57,13 @@ public:
   void activar();
   void ejecutar();
   void cronometro(int*);
+
+  int getAnchuraTablero();
+  int getAlturaTablero();
+
+  void setAnchuraTablero(int);
+  void setAlturaTablero(int);
+  vector<Proyectil> proyectilesActivos;
 
   ~Ataque();
 };

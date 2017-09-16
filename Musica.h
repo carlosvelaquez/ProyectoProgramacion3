@@ -10,7 +10,7 @@ public:
 
   bool pausar();
   bool resumir();
-  bool parar();
+  void parar();
 
   bool reproducir();
   bool cargar();

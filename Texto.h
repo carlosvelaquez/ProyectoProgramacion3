@@ -1,12 +1,12 @@
 #pragma once
-
-#include "SDL/SDL.h"
+#include "ElementoGUI.h"
 #include "SDL/SDL_ttf.h"
 #include <string>
+#include <iostream>
 
 using namespace std;
 
-class Texto{
+class Texto : public ElementoGUI{
 private:
   string texto;
   int size;
@@ -36,13 +36,10 @@ public:
   void setSize(int);
   void setWrap(int);
   void setColor(SDL_Color);
-  void setFont(TTF_Font);
-
-  int getDimX();
-  int getDimY();
 
   void cargarFont(string);
-  void refrescar();
+  bool refrescar();
+  bool recargarFont();
 
   ~Texto();
 };
