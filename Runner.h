@@ -7,6 +7,7 @@
 //#include "BotonAccion.h"
 //#include "ControladorInputs.h"
 #include "ElementoGUI.h"
+#include "BarraProgreso.h"
 //#include "ElementoMenu.h"
 //#include "Enemigo.h"
 #include "Escenario.h"

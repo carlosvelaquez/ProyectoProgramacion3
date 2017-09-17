@@ -31,7 +31,7 @@ int Runner::run(){
   Imagen* fond = new Imagen("./assets/fondo.png");
   Escenario e;
 
-  Texto text("123.. probando. Quien anda por ahi?\n- Soy yo, Carlos");
+  Texto text("Hola amigo Josue, tus graficas ya deberian de estar hechas.");
   text.setWrap(40);
   text.setPosicionX(0);
   text.setPosicionY(0);
@@ -57,6 +57,14 @@ int Runner::run(){
   Tablero* t = new Tablero();
   t->addElemento(tm);
   e.getHUD()->addElemento(t);
+
+  BarraProgreso* bp = new BarraProgreso();
+  bp->setPosicionX(50);
+  bp->setPosicionY(50);
+  bp->setAltura(10);
+  bp->setAnchura(50);
+
+  e.getHUD()->addElemento(bp);
 
   while (continuar) {
     while (SDL_PollEvent(&evento)) {
@@ -90,6 +98,12 @@ int Runner::run(){
           std::cout << "[RUNNER] Cambiando de modo." << '\n';
           Sprite s;
           t->modoDisplay();
+        }else if (evento.key.keysym.sym == SDLK_8){
+          bp->setVisible(true);
+          std::cout << "[RUNNER] Ingrese el nuevo valor para la barra: ";
+          int val;
+          cin >> val;
+          bp->setPorcentaje(val);
         }
       }
 

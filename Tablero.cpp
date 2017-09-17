@@ -77,8 +77,8 @@ void Tablero::modoAtaque(Ataque* ataque){
     std::cout << "[TABLERO] Orden de cambiar a modo ataque recibida, pero el tablero ya está en modo ataque." << '\n';
   }else{
     std::cout << "[TABLERO] Cambiando a modo ataque." << '\n';
-    //thread ejecucion2 (&Tablero::activar, this, ataque);
-    //ejecucion2.detach();
+    thread ejecucion2 (&Tablero::activar, this, ataque);
+    ejecucion2.detach();
 
     thread ejecucion (&Tablero::cambiarTamano, this, ataque->getAnchuraTablero(), ataque->getAlturaTablero());
     ejecucion.detach();
@@ -107,13 +107,13 @@ void Tablero::activar(Ataque* ataque){
   proyectiles = &(ataque->proyectilesActivos);
   long contador;
 
-  while (contador < ataque->getDuracion()) {
+  /*while (contador < ataque->getDuracion()) {
     contador++;
     this_thread::sleep_for(chrono::milliseconds(1));
   }
 
-  std::cout << "[TABLERO] Ataque terminado." << '\n';
-  modoDisplay();
+  //std::cout << "[TABLERO] Ataque terminado." << '\n';
+  //modoDisplay();*/
 }
 
 void Tablero::cambiarTamano(int nAnchura, int nAltura){

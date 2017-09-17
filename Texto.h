@@ -3,6 +3,7 @@
 #include "SDL/SDL_ttf.h"
 #include <string>
 #include <iostream>
+#include <vector>
 
 using namespace std;
 
@@ -15,6 +16,7 @@ private:
   SDL_Color color;
   TTF_Font* font;
   string rutaFont;
+  vector<SDL_Surface*> superficies;
 
 public:
   Texto();

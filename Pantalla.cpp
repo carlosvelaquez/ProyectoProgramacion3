@@ -4,13 +4,13 @@ Pantalla::Pantalla(int nAltura, int nAnchura){
   altura = nAltura;
   anchura = nAnchura;
 
-    superficie = SDL_SetVideoMode(anchura, altura, 32, SDL_SWSURFACE);
-    if (superficie == NULL) {
-      std::cout << "[PANTALLA] Error al inicializar pantalla." << '\n';
-    }else{
-      SDL_WM_SetCaption("Progratale Pre-Alpha v0.1", NULL);
-      std::cout << "[PANTALLA] Pantalla inicializada exitosamente." << '\n';
-    }
+  superficie = SDL_SetVideoMode(anchura, altura, 32, SDL_SWSURFACE);
+  if (superficie == NULL) {
+    std::cout << "[PANTALLA] Error al inicializar pantalla." << '\n';
+  }else{
+    SDL_WM_SetCaption("Progratale Pre-Alpha v0.1", NULL);
+    std::cout << "[PANTALLA] Pantalla inicializada exitosamente." << '\n';
+  }
 
 }
 
@@ -39,7 +39,7 @@ void Pantalla::setAnchura(int nAnchura){
 }
 
 bool Pantalla::refrescar(){
-  aplicarSuperficie(escenario->getFondo().toSuperficie(), 0, 0);
+  aplicarSuperficie(escenario->getFondo().toSuperficie(), -1, -1);
 
   if (escenario != NULL){
     if (escenario->getEspacio() != NULL) {
@@ -84,22 +84,29 @@ bool Pantalla::limpiar(){
   return true;
 }
 
-void Pantalla::aplicarSuperficie(SDL_Surface* super, int x, int y){
-  //Crear un rectangulo para contener los offsets
-  SDL_Rect offset;
-  offset.x = x;
-  offset.y = y;
+void Pantalla::aplicarSuperficie(SDL_Surface* sup, int x, int y){
+  if (x == -1 && y == -1) {
+    SDL_Rect offset;
+    offset.x = 0;
+    offset.y = 0;
 
-  SDL_Rect origin;
-  origin.x = 0;
-  origin.y = 0;
+    SDL_BlitSurface(sup, NULL, superficie, &offset);
+  }else{
+    SDL_Rect offset;
+    offset.x = x;
+    offset.y = y;
 
-  //"Blittear" la Superficies
-  SDL_BlitSurface(super, NULL, superficie, &offset);
+    SDL_BlitSurface(sup, NULL, superficie, &offset);
+    SDL_FreeSurface(sup);
+  }
+
 }
 
 Pantalla::~Pantalla(){
   delete escenario;
-  SDL_FreeSurface(superficie);
-  std::cout << "[PANTALLA] Pantalla destruida." << '\n';
+  /*if (superficieActual != NULL) {
+  SDL_FreeSurface(superficieActual);
+}*/
+SDL_FreeSurface(superficie);
+std::cout << "[PANTALLA] Pantalla destruida." << '\n';
 }

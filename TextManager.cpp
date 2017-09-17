@@ -7,12 +7,19 @@ TextManager::TextManager(Texto* texto, int nMultiplicador, Sonido* sonido, long 
 
   string s = texto->getTexto();
   int ind = 0;
+  int limite;
 
   while (ind < texto->getTexto().length()) {
+    if (texto->getTexto().length() - ind < texto->getWrap()) {
+      limite = texto->getTexto().length() - ind;
+    }else{
+      limite = texto->getWrap();
+    }
+
     int i;
     string str = "";
 
-    for (i = 0; i < texto->getWrap(); i++) {
+    for (i = 0; i < limite; i++) {
       if (s[i + ind] == '\n') {
         i++;
         break;
@@ -21,7 +28,7 @@ TextManager::TextManager(Texto* texto, int nMultiplicador, Sonido* sonido, long 
     }
 
     ind += i;
-    std::cout << str << '\n';
+    //std::cout << str << '\n';
 
     desplazadores.push_back(new DesplazadorTexto(str, sonido, velocidad));
   }

@@ -6,6 +6,7 @@ Texto::Texto(){
   wrap = 10;
   color = {255, 255, 255};
   rutaFont = "./assets/fonts/DTM-Mono.ttf";
+  superficies.clear();
   refrescar();
   recargarFont();
 }
@@ -16,6 +17,7 @@ Texto::Texto(string nTexto){
   wrap = 10;
   color = {255, 255, 255};
   rutaFont = "./assets/fonts/DTM-Mono.ttf";
+  superficies.clear();
   refrescar();
   recargarFont();
 }
@@ -26,6 +28,7 @@ Texto::Texto(string nTexto, int nSize){
   wrap = 10;
   color = {255, 255, 255};
   rutaFont = "./assets/fonts/DTM-Mono.ttf";
+  superficies.clear();
   refrescar();
   recargarFont();
 }
@@ -36,6 +39,7 @@ Texto::Texto(string nTexto, int nSize, int nWrap){
   wrap = nWrap;
   color = {255, 255, 255};
   rutaFont = "./assets/fonts/DTM-Mono.ttf";
+  superficies.clear();
   refrescar();
   recargarFont();
 }
@@ -46,6 +50,7 @@ Texto::Texto(string nTexto, int nSize, int nWrap, SDL_Color nColor){
   wrap = nWrap;
   color = nColor;
   rutaFont = "./assets/fonts/DTM-Mono.ttf";
+  superficies.clear();
   refrescar();
   recargarFont();
 }
@@ -56,6 +61,7 @@ Texto::Texto(string nTexto, int nSize, int nWrap, SDL_Color nColor, string nRuta
   wrap = nWrap;
   color = nColor;
   rutaFont = nRutaFont;
+  superficies.clear();
   refrescar();
   recargarFont();
 }
@@ -88,10 +94,11 @@ SDL_Surface* Texto::toSuperficie(){
   recargarFont();
   refrescar();
 
-  SDL_Surface* s = TTF_RenderText_Solid(font, texto.c_str(), color);
+  SDL_Surface* superficie = TTF_RenderText_Solid(font, texto.c_str(), color);
   TTF_CloseFont(font);
+  superficies.push_back(superficie);
   //std::cout << "[TEXTO] Font cerrada." << '\n';
-  return s;
+  return superficie;
 }
 
 void Texto::setTexto(string nTexto){
@@ -123,6 +130,7 @@ bool Texto::refrescar(){
   length = texto.length();
   altura = size;
   anchura = (size*.75)*length;
+
 }
 
 bool Texto::recargarFont(){
@@ -139,5 +147,9 @@ bool Texto::recargarFont(){
 
 Texto::~Texto(){
   refrescar();
+
+  /*for (int i = 0; i < superficies.size(); i++) {
+    SDL_FreeSurface(superficies[i]);
+  }*/
   //TTF_CloseFont(font);
 }

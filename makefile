@@ -1,8 +1,8 @@
 #runTest: main.o Ataque.o AtaqueJugador.o Batalla.o Boton.o BotonAccion.o ControladorInputs.o ElementoGUI.o ElementoMenu.o Enemigo.o Escenario.o Espacio.o HUD.o Imagen.o Label.o MedidorAtaque.o Menu.o MostradorTexto.o Pantalla.o Prop.o Proyectil.o Runner.o Sprite.o Tablero.o Texto.o
 	#g++ -pthread -lSDL -lSDL_image -lSDL_ttf -lSDL_mixer main.o Ataque.o AtaqueJugador.o Batalla.o Boton.o BotonAccion.o ControladorInputs.o ElementoGUI.o ElementoMenu.o Enemigo.o Escenario.o Espacio.o HUD.o Imagen.o Label.o MedidorAtaque.o Menu.o MostradorTexto.o Pantalla.o Prop.o Proyectil.o Runner.o Sprite.o Tablero.o Texto.o -o runTest
 
-runTest.out: main.o Ataque.o Escenario.o Espacio.o Imagen.o Pantalla.o Prop.o Proyectil.o Runner.o Sprite.o Texto.o Audio.o Sonido.o Musica.o ElementoGUI.o AtaqueJugador.o DesplazadorTexto.o HUD.o Tablero.o TextManager.o
-	g++ -g -lX11 -pthread -lSDL -lSDL_image -lSDL_ttf -lSDL_mixer main.o Ataque.o Escenario.o Espacio.o Imagen.o Pantalla.o Prop.o Proyectil.o Runner.o Sprite.o Texto.o Audio.o Sonido.o Musica.o ElementoGUI.o AtaqueJugador.o DesplazadorTexto.o HUD.o Tablero.o TextManager.o -o runTest.out
+runTest.out: main.o Ataque.o Escenario.o Espacio.o Imagen.o Pantalla.o Prop.o Proyectil.o Runner.o Sprite.o Texto.o Audio.o Sonido.o Musica.o ElementoGUI.o AtaqueJugador.o DesplazadorTexto.o HUD.o Tablero.o TextManager.o BarraProgreso.o
+	g++ -g -lX11 -pthread -lSDL -lSDL_image -lSDL_ttf -lSDL_mixer main.o Ataque.o Escenario.o Espacio.o Imagen.o Pantalla.o Prop.o Proyectil.o Runner.o Sprite.o Texto.o Audio.o Sonido.o Musica.o ElementoGUI.o AtaqueJugador.o DesplazadorTexto.o HUD.o Tablero.o TextManager.o BarraProgreso.o -o runTest.out
 
 main.o: main.cpp
 	g++ -g -c main.cpp
@@ -12,6 +12,9 @@ Ataque.o: Ataque.h Ataque.cpp
 
 AtaqueJugador.o: AtaqueJugador.h AtaqueJugador.cpp
 	g++ -g -c AtaqueJugador.cpp
+
+BarraProgreso.o: BarraProgreso.h BarraProgreso.cpp
+	g++ -g -c BarraProgreso.cpp
 
 #Batalla.o: Batalla.h Batalla.cpp
 	#g++ -c Batalla.cpp
