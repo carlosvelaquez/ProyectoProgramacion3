@@ -14,6 +14,8 @@ public:
 
   vector<ElementoGUI*> getElementos();
   void setElementos(vector<ElementoGUI*>);
+
+  ~HUD();
   //void removeElemento(ElementoGUI*);
   //void removeElemento(int);
 };

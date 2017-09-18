@@ -96,8 +96,6 @@ SDL_Surface* Texto::toSuperficie(){
 
   SDL_Surface* superficie = TTF_RenderText_Solid(font, texto.c_str(), color);
   TTF_CloseFont(font);
-  superficies.push_back(superficie);
-  //std::cout << "[TEXTO] Font cerrada." << '\n';
   return superficie;
 }
 

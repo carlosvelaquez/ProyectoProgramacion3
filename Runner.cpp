@@ -32,7 +32,7 @@ int Runner::run(){
   Escenario e;
 
   Texto text("Hola amigo Josue, tus graficas ya deberian de estar hechas.");
-  text.setWrap(40);
+  text.setWrap(43);
   text.setPosicionX(0);
   text.setPosicionY(0);
 
@@ -41,7 +41,7 @@ int Runner::run(){
   e.setFondo(*fond);
   e.setHUD(new HUD());
 
-  TextManager* tm = new TextManager(&text, 20, &sond, 100);
+  TextManager* tm = new TextManager(&text, 25, &sond, 100);
   tm->setPosicionX(12);
   tm->setPosicionY(10);
   //e.getHUD()->addElemento(dt);
@@ -64,11 +64,85 @@ int Runner::run(){
   bp->setAltura(10);
   bp->setAnchura(50);
 
+  Menu* mn = new Menu();
+  mn->addElemento(Texto("Reproducir Sonido"));
+  mn->addElemento(Texto("- - - - - - - - - -"));
+  mn->addElemento(Texto("Reproducir Musica"));
+  mn->addElemento(Texto("Pausar Musica"));
+  mn->addElemento(Texto("Resumir Musica"));
+  mn->addElemento(Texto("Parar Musica"));
+  mn->addElemento(Texto("- - - - - - - - - -"));
+  mn->addElemento(Texto("Probar TextManager"));
+  mn->addElemento(Texto("Tablero Modo Display"));
+  mn->addElemento(Texto("Tablero Modo Ataque"));
+  mn->addElemento(Texto("- - - - - - - - - -"));
+  mn->addElemento(Texto("Salir"));
+
+  mn->setWrap(11);
+  //mn->setTipo(2);
+  mn->setPosicionX(0);
+  mn->setPosicionY(0);
+
+  e.getHUD()->addElemento(mn);
   e.getHUD()->addElemento(bp);
 
   while (continuar) {
     while (SDL_PollEvent(&evento)) {
       if (evento.type = SDL_KEYDOWN) {
+        if (evento.key.keysym.sym == SDLK_UP || evento.key.keysym.sym == SDLK_DOWN){
+          std::cout << "[RUNNER] Entrando a menu..." << '\n';
+          mn->setVisible(true);
+
+          switch (mn->trap()) {
+            case 0:{
+              std::cout << "[RUNNER] Reproduciendo sonido intro." << '\n';
+              intro.reproducir();
+              break;
+            }
+            case 2:{
+              std::cout << "[RUNNER] Reproduciendo musica." << '\n';
+              musica.reproducir();
+              break;
+            }
+            case 3:{
+              std::cout << "[RUNNER] Reproduciendo musica." << '\n';
+              musica.pausar();
+              break;
+            }
+            case 4:{
+              std::cout << "[RUNNER] Resumiendo musica." << '\n';
+              musica.resumir();
+              break;
+            }
+            case 5:{
+              std::cout << "[RUNNER] Parando musica." << '\n';
+              musica.parar();
+              break;
+            }
+            case 7:{
+              std::cout << "[RUNNER] Iniciando desplazador de texto." << '\n';
+              tm->iniciar();
+              break;
+            }
+            case 8:{
+              t->modoDisplay();
+              break;
+            }
+            case 9:{
+              Sprite s;
+              t->modoAtaque(new Ataque(1, NULL, NULL, false, s, 1000, 5000, 1000, 1000, 100, 250, 200));
+              break;
+            }
+            case 11:{
+              continuar = false;
+              break;
+            }
+          }
+          mn->setVisible(false);
+        }
+      }
+
+      /*
         if (evento.key.keysym.sym == SDLK_UP){
           continuar = false;
         }else if (evento.key.keysym.sym == SDLK_LEFT){
@@ -104,15 +178,23 @@ int Runner::run(){
           int val;
           cin >> val;
           bp->setPorcentaje(val);
+        }else if (evento.key.keysym.sym == SDLK_9){
+          std::cout << "[RUNNER] Entrando a menu..." << '\n';
+          mn->setVisible(true);
+          cout << "[MENU] Menú retornó valor: " << mn->trap() << endl;
+          mn->setVisible(false);
         }
       }
 
       if (evento.type == SDL_QUIT) {
         continuar = false;
       }
-
-      SDL_WaitEvent(&evento);
+*/
+      if (!continuar) {
+        SDL_WaitEvent(&evento);
+      }
     }
+
 
   }
 

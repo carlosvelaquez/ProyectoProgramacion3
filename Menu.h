@@ -1,28 +1,33 @@
 #pragma once
 #include "ElementoGUI.h"
 #include <vector>
-#include <string>
+#include "Texto.h"
 
 using namespace std;
 
 class Menu : public ElementoGUI{
 private:
-  vector<string> elementos;
+  vector<Texto> elementos;
   bool activo;
   bool visible;
   int indice;
   int tipo;
   int wrap;
 
+  SDL_Color colorActivo;
+  SDL_Color colorInactivo;
+
 public:
-  vector<string> getElementos();
+  Menu();
+
+  vector<Texto> getElementos();
   bool isActivo();
   bool isVisible();
   int getIndice();
   int getTipo();
   int getWrap();
 
-  void setElementos(vector<ElementoMenu>);
+  void setElementos(vector<Texto>);
   void setActivo(bool);
   void setVisible(bool);
   void setIndice(int);
@@ -34,4 +39,14 @@ public:
 
   void indiceUp();
   void indiceDown();
+  int trap();
+
+  void addElemento(Texto);
+  void clear();
+
+  SDL_Color getColorActivo();
+  SDL_Color getColorInactivo();
+
+  void setColorActivo(SDL_Color);
+  void setColorInactivo(SDL_Color);
 };

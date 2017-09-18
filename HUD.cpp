@@ -19,3 +19,9 @@ vector<ElementoGUI*> HUD::getElementos(){
 void HUD::setElementos(vector<ElementoGUI*> nElementos){
   elementos = nElementos;
 }
+
+HUD::~HUD(){
+  for (int i = 0; i < elementos.size(); i++) {
+    delete elementos[i];
+  }
+}
