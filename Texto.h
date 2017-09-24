@@ -3,6 +3,7 @@
 #include "SDL/SDL_ttf.h"
 #include <string>
 #include <iostream>
+#include <fstream>
 #include <vector>
 
 using namespace std;
@@ -42,6 +43,15 @@ public:
   void cargarFont(string);
   bool refrescar();
   bool recargarFont();
+
+  friend istream& operator>> (istream& input, Texto t){
+    string s;
+    getline(input, s);
+    cout << "VAadnja" << s << '\n';
+    //texto = s;
+    t.setTexto(s);
+    return input;
+  }
 
   ~Texto();
 };

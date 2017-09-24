@@ -19,6 +19,7 @@ public:
   void setAltura(int);
   void setPosicionX(int);
   void setPosicionY(int);
+  void centrar();
 
   virtual SDL_Surface* toSuperficie() = 0;
   virtual bool refrescar() = 0;

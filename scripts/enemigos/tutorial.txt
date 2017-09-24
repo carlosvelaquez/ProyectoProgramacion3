@@ -1,0 +1,9 @@
+5
+0
+10
+Guia Jaguar
+./assets/sprites/guia.png
+./assets/sonidos/guia.wav
+tutorial
+20
+200

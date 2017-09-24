@@ -4,7 +4,11 @@
 #include "SDL/SDL_image.h"
 #include "SDL/SDL_ttf.h"
 #include <iostream>
+#include <chrono>
+#include <thread>
 #include "Texto.h"
+
+using namespace std;
 
 class Pantalla{
 private:
@@ -27,6 +31,7 @@ public:
   bool refrescar();
   bool limpiar();
   void aplicarSuperficie(SDL_Surface*, int, int);
+  void fade(int, long);
 
   ~Pantalla();
 };

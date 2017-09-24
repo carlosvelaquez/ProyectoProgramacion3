@@ -3,15 +3,21 @@
 Sprite::Sprite(){
   Imagen nFuente("./assets/souls.png");
   fuente = nFuente;
+  //altura = fuente.getAltura();
+  //anchura = fuente.getAnchura();
 }
 
 Sprite::Sprite(string nImagenFuente){
   Imagen nFuente(nImagenFuente);
   fuente = nFuente;
+  //altura = fuente.getAltura();
+  //anchura = fuente.getAnchura();
 }
 
 Sprite::Sprite(Imagen nFuente){
   fuente = nFuente;
+  //altura = fuente.getAltura();
+  //anchura = fuente.getAnchura();
 }
 
 Sprite::Sprite(Imagen nFuente, SDL_Rect* nClip){
@@ -47,7 +53,11 @@ SDL_Surface* Sprite::toSuperficie(){
   return fuente.toSuperficie();
 }
 
+/*bool Sprite::refrescar(){
+  fuente.recargar();
+}*/
+
 Sprite::~Sprite(){
-  delete clip;
-  delete superficie;
+  //delete clip;
+  //delete superficie;
 }

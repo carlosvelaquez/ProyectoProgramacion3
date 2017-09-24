@@ -1,28 +1,30 @@
 #pragma once
 #include "Enemigo.h"
 #include "Imagen.h"
+#include "Musica.h"
 
 class Batalla{
 
 private:
-  Enemigo enemigo;
+  Enemigo* enemigo;
   Imagen fondo;
   Musica* musica;
   Sprite* decoraciones;
   bool activa;
+  int turno;
 
 public:
-  Batalla(Enemigo, Imagen, Sonido, Sprite*);
+  Batalla(Enemigo*, Imagen, Musica*, Sprite*);
 
-  Enemigo getEnemigo();
+  Enemigo* getEnemigo();
   Imagen getFondo();
-  Sonido getMusica();
+  Musica* getMusica();
   Sprite* getDecoraciones();
   bool isActiva();
 
-  void setEnemigo(Enemigo);
+  void setEnemigo(Enemigo*);
   void setFondo(Imagen);
-  void setMusica(Sonido);
+  void setMusica(Musica*);
   void setDecoraciones(Sprite*);
   void setActiva(bool);
 

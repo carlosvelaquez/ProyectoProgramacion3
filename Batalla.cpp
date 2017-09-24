@@ -1,6 +1,6 @@
 #include "Batalla.h"
 
-Batalla::Batalla(Enemigo nEnemigo, Imagen nFondo, Sonido nMusica, Sprite* nDecoraciones){
+Batalla::Batalla(Enemigo* nEnemigo, Imagen nFondo, Musica* nMusica, Sprite* nDecoraciones){
   enemigo = nEnemigo;
   fondo = nFondo;
   musica = nMusica;
@@ -8,10 +8,12 @@ Batalla::Batalla(Enemigo nEnemigo, Imagen nFondo, Sonido nMusica, Sprite* nDecor
 }
 
 Batalla::~Batalla(){
-  delete decoraciones;
+  if (decoraciones != NULL) {
+    delete decoraciones;
+  }
 }
 
-Enemigo Batalla::getEnemigo(){
+Enemigo* Batalla::getEnemigo(){
   return enemigo;
 }
 
@@ -19,7 +21,7 @@ Imagen Batalla::getFondo(){
   return fondo;
 }
 
-Sonido Batalla::getMusica(){
+Musica* Batalla::getMusica(){
   return musica;
 }
 
@@ -31,18 +33,18 @@ bool Batalla::isActiva(){
   return activa;
 }
 
-void Batalla::setEnemigo(Enemigo nEnemigo){
+void Batalla::setEnemigo(Enemigo* nEnemigo){
   enemigo = nEnemigo;
 }
 
-void Batalla::setMusica(Sonido nMusica){
+void Batalla::setMusica(Musica* nMusica){
   musica = nMusica;
 }
 
-void Batalla::setDecoraciones(bool nActiva){
-  activa = nActiva;
+void Batalla::setDecoraciones(Sprite* nDeco){
+  decoraciones = nDeco;
 }
 
-Batalla::~Batalla(){
-  delete decoraciones;
+void Batalla::setActiva(bool nActiva){
+  activa = nActiva;
 }

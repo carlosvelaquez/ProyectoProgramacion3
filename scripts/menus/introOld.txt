@@ -1,0 +1,20 @@
+1
+10
+10
+11
+255
+247
+78
+255
+255
+255
+20
+Reproducir Sonido
+Reproducir Musica
+Pausar Musica
+Resumir Musica
+Parar Musica
+Probar TextManager
+Tablero Modo Display
+Tablero Modo Ataque
+Salir

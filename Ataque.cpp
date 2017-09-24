@@ -10,6 +10,7 @@ Ataque::Ataque(int nCantidadProyectiles, int** nPosiciones, int** nVelocidades, 
   sleepProyectiles = nSleepProyectiles;
   sleepRondas = nSleepRondas;
   sleepInicial = nSleepInicial;
+  duracion = nDuracion;
   anchuraTablero = nAnchura;
   alturaTablero = nAltura;
 }
@@ -165,10 +166,10 @@ void Ataque::setAlturaTablero(int nAltura){
 
 
 Ataque::~Ataque(){
-  for (int i = 0; i < cantidadProyectiles; i++) {
+  /*for (int i = 0; i < cantidadProyectiles; i++) {
     delete[] posiciones;
     delete[] velocidades;
   }
 
-  delete decoraciones;
+  delete decoraciones;*/
 }

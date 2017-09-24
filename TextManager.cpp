@@ -35,6 +35,48 @@ TextManager::TextManager(Texto* texto, int nMultiplicador, Sonido* sonido, long 
 
   setVisible(false);
   multiplicador = nMultiplicador;
+
+  setPosicionX(15);
+  setPosicionY(15);
+}
+
+void TextManager::reconstruir(Texto* texto, int nMultiplicador, Sonido* sonido, long velocidad){
+  desplazadores.clear();
+  vector<string> strings;
+  strings.clear();
+
+  string s = texto->getTexto();
+  int ind = 0;
+  int limite;
+
+  while (ind < texto->getTexto().length()) {
+    if (texto->getTexto().length() - ind < texto->getWrap()) {
+      limite = texto->getTexto().length() - ind;
+    }else{
+      limite = texto->getWrap();
+    }
+
+    int i;
+    string str = "";
+
+    for (i = 0; i < limite; i++) {
+      if (s[i + ind] == '\n') {
+        i++;
+        break;
+      }
+      str += s[i + ind];
+    }
+
+    ind += i;
+    //std::cout << str << '\n';
+
+    desplazadores.push_back(new DesplazadorTexto(str, sonido, velocidad));
+  }
+
+  setVisible(false);
+  multiplicador = nMultiplicador;
+  setPosicionX(15);
+  setPosicionY(15);
 }
 
 int TextManager::getMultiplicador(){
@@ -59,6 +101,10 @@ int TextManager::getPosicionY(){
   }else{
     return -1;
   }
+}
+
+bool TextManager::isActivo(){
+  return activo;
 }
 
 void TextManager::setPosicionX(int nPos){
@@ -91,14 +137,49 @@ void TextManager::setVisible(bool nVisible){
   }
 }
 
+void TextManager::trap(){
+  Uint8* tecla = SDL_GetKeyState(NULL);
+  bool saltar = false;
+  long velocidadOld;
+
+  if (desplazadores.size() > 0) {
+    velocidadOld = desplazadores[0]->getVelocidad();
+  }else{
+    velocidadOld = 100;
+  }
+
+  iniciar();
+
+  while (activo) {
+    SDL_PumpEvents();
+
+    if (tecla[SDLK_x]){
+      saltar = true;
+      setVelocidad(25);
+      setMute(true);
+    }else{
+      saltar = false;
+      setVelocidad(velocidadOld);
+      setMute(false);
+      this_thread::sleep_for(chrono::milliseconds(100));
+    }
+  }
+
+  if (!saltar) {
+    this_thread::sleep_for(chrono::milliseconds(3000));
+  }
+}
+
 void TextManager::iniciar(){
   setVisible(false);
+  activo = true;
 
   thread ejecucion (&TextManager::desplazar, this);
   ejecucion.detach();
 }
 
 void TextManager::desplazar(){
+
   for (int i = 0; i < desplazadores.size(); i++) {
     desplazadores[i]->setPosicionY((i*multiplicador) + desplazadores[0]->getPosicionY());
     desplazadores[i]->setPosicionX(desplazadores[0]->getPosicionX());
@@ -109,6 +190,20 @@ void TextManager::desplazar(){
       this_thread::sleep_for(chrono::milliseconds(100));
     }
   }
+
+  activo = false;
+}
+
+void TextManager::setVelocidad(long nVelocidad){
+  for (int i = 0; i < desplazadores.size(); i++) {
+    desplazadores[i]->setVelocidad(nVelocidad);
+  }
+}
+
+void TextManager::setMute(bool nMute){
+  for (int i = 0; i < desplazadores.size(); i++) {
+    desplazadores[i]->setMute(nMute);
+  }
 }
 
 SDL_Surface* TextManager::toSuperficie(){
@@ -116,11 +211,13 @@ SDL_Surface* TextManager::toSuperficie(){
 
   for (int i = 0; i < desplazadores.size(); i++) {
     if (desplazadores[i]->isVisible()){
+      SDL_Surface* super = desplazadores[i]->toSuperficie();
       SDL_Rect offset2;
       offset2.x = desplazadores[i]->getPosicionX();
       offset2.y = desplazadores[i]->getPosicionY();
 
-      SDL_BlitSurface(desplazadores[i]->toSuperficie(), NULL, superficie, &offset2);
+      SDL_BlitSurface(super, NULL, superficie, &offset2);
+      SDL_FreeSurface(super);
     }
   }
 

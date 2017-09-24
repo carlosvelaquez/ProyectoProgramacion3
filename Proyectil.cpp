@@ -22,13 +22,13 @@ Sprite Proyectil::getSprite(){
   return sprite;
 }
 
-int Proyectil::getAnchura(){
+/*int Proyectil::getAnchura(){
   return anchura;
 }
 
 int Proyectil::getAltura(){
   return altura;
-}
+}*/
 
 int Proyectil::getVelocidadX(){
   return velocidadX;
@@ -38,25 +38,25 @@ int Proyectil::getVelocidadY(){
   return velocidadY;
 }
 
-int Proyectil::getPosicionX(){
+/*int Proyectil::getPosicionX(){
   return posicionX;
 }
 
 int Proyectil::getPosicionY(){
   return posicionY;
-}
+}*/
 
 void Proyectil::setSprite(Sprite nSprite){
   sprite = nSprite;
 }
 
-void Proyectil::setPosicionX(int posX){
+/*void Proyectil::setPosicionX(int posX){
   posicionX = posX;
 }
 
 void Proyectil::setPosicionY(int posY){
   posicionY = posY;
-}
+}*/
 
 void Proyectil::setVelocidadX(int velX){
   velocidadX = velX;
@@ -78,4 +78,12 @@ void Proyectil::ejecutar(){
     posicionY += velocidadY;
     this_thread::sleep_for(chrono::milliseconds(1));
   }
+}
+
+SDL_Surface* Proyectil::toSuperficie(){
+  return sprite.toSuperficie();
+}
+
+bool Proyectil::refrescar(){
+  return true;
 }

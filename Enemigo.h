@@ -1,8 +1,11 @@
 #pragma once
 #include <string>
+#include <vector>
 #include "Sprite.h"
 #include "Sonido.h"
 #include "Ataque.h"
+#include "Texto.h"
+#include "ElementoGUI.h"
 
 using namespace std;
 
@@ -14,14 +17,15 @@ private:
   string nombre;
   Sprite sprite;
   Sonido sonidoDialogo;
-  Ataque* ataques;
+  vector<Ataque> ataques;
   int cantidadAtaques;
-  Texto* dialogo;
+  vector<string> dialogo;
   int flinch;
   int velocidadFlinch;
+  int limiteAtaques;
 
 public:
-  Enemigo(int, int, int, string, Sprite, Sonido, Ataque*, int, Texto*, int, int);
+  Enemigo(int, int, int, string, Sprite, Sonido, vector<Ataque>, int, vector<string>, int, int);
 
   int getAtaque();
   int getDefensa();
@@ -29,11 +33,12 @@ public:
   string getNombre();
   Sprite getSprite();
   Sonido getSonidoDialogo();
-  Ataque* getAtaques();
+  vector<Ataque> getAtaques();
   int getCantidadAtaques();
-  Texto* getDialogo();
+  vector<string> getDialogo();
   int getFlinch();
   int getVelocidadFlinch();
+  int getLimiteAtaques();
 
   void setAtaque(int);
   void setDefensa(int);
@@ -41,11 +46,14 @@ public:
   void setNombre(string);
   void setSprite(Sprite);
   void setSonidoDialogo(Sonido);
-  void setAtaques(Ataque*, int);
-  void setAtaques(Ataque*);
-  void setDialogo(Texto*);
+  void setAtaques(vector<Ataque>);
+  void setDialogo(vector<string>);
   void setFlinch(int);
   void setVelocidadFlinch(int);
+  void setLimiteAtaques(int);
+
+  //SDL_Surface* toSuperficie();
+  //bool refrescar();
 
   ~Enemigo();
 };

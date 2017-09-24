@@ -42,6 +42,7 @@ public:
   int trap();
 
   void addElemento(Texto);
+  void chop();
   void clear();
 
   SDL_Color getColorActivo();

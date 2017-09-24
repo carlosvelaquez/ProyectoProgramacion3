@@ -1,6 +1,6 @@
 #include "Enemigo.h"
 
-Enemigo::Enemigo(int nAtaque, int nDefensa, int nHP, string nNombre, Sprite nSprite, Sonido nSonidoDialogo, Ataque* nAtaques, int nCantidadAtaques, Texto* nDialogo, int nFlinch, int nVelocidadFlinch){
+Enemigo::Enemigo(int nAtaque, int nDefensa, int nHP, string nNombre, Sprite nSprite, Sonido nSonidoDialogo, vector<Ataque> nAtaques, int nCantidadAtaques, vector<string> nDialogo, int nFlinch, int nVelocidadFlinch){
   ataque = nAtaque;
   defensa = nDefensa;
   hp = nHP;
@@ -37,15 +37,16 @@ Sonido Enemigo::getSonidoDialogo(){
   return sonidoDialogo;
 }
 
-Ataque* Enemigo::getAtaques(){
+vector<Ataque> Enemigo::getAtaques(){
   return ataques;
 }
 
 int Enemigo::getCantidadAtaques(){
+  cantidadAtaques = ataques.size();
   return cantidadAtaques;
 }
 
-Texto* Enemigo::getDialogo(){
+vector<string> Enemigo::getDialogo(){
   return dialogo;
 }
 
@@ -81,12 +82,12 @@ void Enemigo::setSonidoDialogo(Sonido nSonidoDialogo){
   sonidoDialogo = nSonidoDialogo;
 }
 
-void Enemigo::setAtaques(Ataque* nAtaques, int nCantidadAtaques){
+void Enemigo::setAtaques(vector<Ataque> nAtaques){
   ataques = nAtaques;
-  cantidadAtaques = nCantidadAtaques;
+  cantidadAtaques = ataques.size();
 }
 
-void Enemigo::setDialogo(Texto* nDialogo){
+void Enemigo::setDialogo(vector<string> nDialogo){
   dialogo = nDialogo;
 }
 
@@ -98,7 +99,15 @@ void Enemigo::setVelocidadFlinch(int nVelocidadFlinch){
   velocidadFlinch = nVelocidadFlinch;
 }
 
+/*SDL_Surface* Enemigo::toSuperficie(){
+  return sprite.toSuperficie();
+}
+
+bool Enemigo::refrescar(){
+
+}*/
+
+
+
 Enemigo::~Enemigo(){
-  delete[] ataques;
-  delete[] dialogo;
 }

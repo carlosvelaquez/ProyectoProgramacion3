@@ -20,6 +20,10 @@ void HUD::setElementos(vector<ElementoGUI*> nElementos){
   elementos = nElementos;
 }
 
+void HUD::removeElemento(int indice){
+  elementos.erase(elementos.begin() + indice);
+}
+
 HUD::~HUD(){
   for (int i = 0; i < elementos.size(); i++) {
     delete elementos[i];

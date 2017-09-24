@@ -1,0 +1,8 @@
+#Tipo
+#PosicionX
+#PosicionY
+#Wrap
+#Color de elemento activo (RGB)
+#Color de elemento inactivo
+#Tamaño de la fuente
+#Strings de los elementos

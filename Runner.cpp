@@ -8,10 +8,6 @@ Runner::Runner(){
 int Runner::run(){
   bool continuar = true;
 
-  /*if (init != 0) {
-    return 1;
-  }*/
-
   if(SDL_Init(SDL_INIT_EVERYTHING) == -1){
     std::cout << "[RUNNER] Error al inicializar SDL." << '\n';
   }
@@ -28,178 +24,59 @@ int Runner::run(){
   SDL_Event evento;
 
   std::cout << "[RUNNER] Cargando assets..." << '\n';
-  Imagen* fond = new Imagen("./assets/fondo.png");
-  Escenario e;
 
-  Texto text("Hola amigo Josue, tus graficas ya deberian de estar hechas.");
-  text.setWrap(43);
-  text.setPosicionX(0);
-  text.setPosicionY(0);
+  Imagen* fond = new Imagen("./assets/screens/IntroMenu.png");
+  Escenario eMenu;
+  Menu* mn = cargarMenu("intro");
+  Soul* s = new Soul();
 
-  Sonido sond("./assets/sonidos/dialogTest.wav");
+  eMenu.setFondo(*fond);
+  eMenu.setHUD(new HUD());
 
-  e.setFondo(*fond);
-  e.setHUD(new HUD());
+  eMenu.getHUD()->addElemento(mn);
+  mn->setVisible(true);
 
-  TextManager* tm = new TextManager(&text, 25, &sond, 100);
-  tm->setPosicionX(12);
-  tm->setPosicionY(10);
-  //e.getHUD()->addElemento(dt);
+  Sonido sonidoIntro("./assets/sonidos/intro.wav");
+  Musica musicaMenu("./assets/musica/menu.wav");
 
-  Musica musica("./assets/musica/boss3.wav");
-  Sonido intro("./assets/sonidos/intro.wav");
   std::cout << "[RUNNER] Assets cargados." << '\n';
-
+  std::cout << "[RUNNER] Iniciando intro..." << '\n';
   playIntro();
-  pantalla->setEscenario(&e);
 
-  std::cout << "[RUNNER] Creando tablero." << '\n';
-  Tablero* t = new Tablero();
-  t->addElemento(tm);
-  e.getHUD()->addElemento(t);
-
-  BarraProgreso* bp = new BarraProgreso();
-  bp->setPosicionX(50);
-  bp->setPosicionY(50);
-  bp->setAltura(10);
-  bp->setAnchura(50);
-
-  Menu* mn = new Menu();
-  mn->addElemento(Texto("Reproducir Sonido"));
-  mn->addElemento(Texto("- - - - - - - - - -"));
-  mn->addElemento(Texto("Reproducir Musica"));
-  mn->addElemento(Texto("Pausar Musica"));
-  mn->addElemento(Texto("Resumir Musica"));
-  mn->addElemento(Texto("Parar Musica"));
-  mn->addElemento(Texto("- - - - - - - - - -"));
-  mn->addElemento(Texto("Probar TextManager"));
-  mn->addElemento(Texto("Tablero Modo Display"));
-  mn->addElemento(Texto("Tablero Modo Ataque"));
-  mn->addElemento(Texto("- - - - - - - - - -"));
-  mn->addElemento(Texto("Salir"));
-
-  mn->setWrap(11);
-  //mn->setTipo(2);
-  mn->setPosicionX(0);
-  mn->setPosicionY(0);
-
-  e.getHUD()->addElemento(mn);
-  e.getHUD()->addElemento(bp);
+  musicaMenu.reproducir();
+  pantalla->setEscenario(&eMenu);
 
   while (continuar) {
-    while (SDL_PollEvent(&evento)) {
-      if (evento.type = SDL_KEYDOWN) {
-        if (evento.key.keysym.sym == SDLK_UP || evento.key.keysym.sym == SDLK_DOWN){
-          std::cout << "[RUNNER] Entrando a menu..." << '\n';
-          mn->setVisible(true);
-
-          switch (mn->trap()) {
-            case 0:{
-              std::cout << "[RUNNER] Reproduciendo sonido intro." << '\n';
-              intro.reproducir();
-              break;
-            }
-            case 2:{
-              std::cout << "[RUNNER] Reproduciendo musica." << '\n';
-              musica.reproducir();
-              break;
-            }
-            case 3:{
-              std::cout << "[RUNNER] Reproduciendo musica." << '\n';
-              musica.pausar();
-              break;
-            }
-            case 4:{
-              std::cout << "[RUNNER] Resumiendo musica." << '\n';
-              musica.resumir();
-              break;
-            }
-            case 5:{
-              std::cout << "[RUNNER] Parando musica." << '\n';
-              musica.parar();
-              break;
-            }
-            case 7:{
-              std::cout << "[RUNNER] Iniciando desplazador de texto." << '\n';
-              tm->iniciar();
-              break;
-            }
-            case 8:{
-              t->modoDisplay();
-              break;
-            }
-            case 9:{
-              Sprite s;
-              t->modoAtaque(new Ataque(1, NULL, NULL, false, s, 1000, 5000, 1000, 1000, 100, 250, 200));
-              break;
-            }
-            case 11:{
-              continuar = false;
-              break;
-            }
-          }
-          mn->setVisible(false);
-        }
+    switch (mn->trap()) {
+      case 0:{
+        std::cout << "[RUNNER] Entrando a creación de save." << '\n';
+        crearSave();
+        break;
       }
-
-      /*
-        if (evento.key.keysym.sym == SDLK_UP){
-          continuar = false;
-        }else if (evento.key.keysym.sym == SDLK_LEFT){
-          std::cout << "[RUNNER] Reproduciendo sonido intro." << '\n';
-          intro.reproducir();
-        }else if (evento.key.keysym.sym == SDLK_RIGHT){
-          std::cout << "[RUNNER] Reproduciendo musica." << '\n';
-          musica.reproducir();
-        }else if (evento.key.keysym.sym == SDLK_1){
-          std::cout << "[RUNNER] Pausando musica." << '\n';
-          musica.pausar();
-        }else if (evento.key.keysym.sym == SDLK_2){
-          std::cout << "[RUNNER] Resumiendo musica." << '\n';
-          musica.resumir();
-        }else if (evento.key.keysym.sym == SDLK_3){
-          std::cout << "[RUNNER] Parando musica." << '\n';
-          musica.parar();
-        }else if (evento.key.keysym.sym == SDLK_5){
-          std::cout << "[RUNNER] Iniciando desplazador de texto." << '\n';
-          tm->iniciar();
-        }else if (evento.key.keysym.sym == SDLK_6){
-          std::cout << "[RUNNER] Cambiando de modo." << '\n';
-          Sprite s;
-          t->modoAtaque(new Ataque(1, NULL, NULL, false, s, 1000, 5000, 1000, 1000, 100, 250, 200));
-        }
-        else if (evento.key.keysym.sym == SDLK_7){
-          std::cout << "[RUNNER] Cambiando de modo." << '\n';
-          Sprite s;
-          t->modoDisplay();
-        }else if (evento.key.keysym.sym == SDLK_8){
-          bp->setVisible(true);
-          std::cout << "[RUNNER] Ingrese el nuevo valor para la barra: ";
-          int val;
-          cin >> val;
-          bp->setPorcentaje(val);
-        }else if (evento.key.keysym.sym == SDLK_9){
-          std::cout << "[RUNNER] Entrando a menu..." << '\n';
-          mn->setVisible(true);
-          cout << "[MENU] Menú retornó valor: " << mn->trap() << endl;
-          mn->setVisible(false);
-        }
+      case 1:{
+        std::cout << "[RUNNER] Entrando a carga de save." << '\n';
+        //cargarSave():
+        break;
       }
-
-      if (evento.type == SDL_QUIT) {
+      case 2:{
+        std::cout << "[RUNNER] Opciones no implementadas." << '\n';
+        break;
+      }
+      case 3:{
+        std::cout << "[RUNNER] Saliendo del menú principal." << '\n';
         continuar = false;
-      }
-*/
-      if (!continuar) {
-        SDL_WaitEvent(&evento);
+        break;
       }
     }
 
-
+    if (continuar) {
+      SDL_WaitEvent(&evento);
+    }
   }
 
   std::cout << "[RUNNER] Cerrando todo y saliendo..." << '\n';
   vivo = false;
+  this_thread::sleep_for(chrono::milliseconds(1000));
 
   TTF_Quit();
   Mix_CloseAudio();
@@ -209,26 +86,107 @@ int Runner::run(){
 }
 
 void Runner::playIntro(){
-  Sonido intro("./assets/sonidos/intro.wav");
-
-  Imagen* fond = new Imagen("./assets/screens/cargando.png");
   Escenario e;
+  Imagen* fond = new Imagen("./assets/screens/cargando.png");
   e.setFondo(*fond);
   pantalla->setEscenario(&e);
+
   thread refresher (&Runner::iniciarRefresher, this);
   refresher.detach();
-  //this_thread::sleep_for(chrono::milliseconds(3000));
-
+  this_thread::sleep_for(chrono::milliseconds(10));
 
   fond = new Imagen("./assets/screens/blank.png");
   e.setFondo(*fond);
-  //this_thread::sleep_for(chrono::milliseconds(1000));
+  this_thread::sleep_for(chrono::milliseconds(1000));
 
+  Musica introMus("./assets/musica/intro.wav");
+  Sonido intro("./assets/sonidos/ui.wav");
+  Sonido intro2("./assets/sonidos/intro.wav");
+
+  fond = new Imagen("./assets/screens/blank.png");
+  e.setFondo(*fond);
+  this_thread::sleep_for(chrono::milliseconds(1000));
+  Tablero* t = new Tablero();
+  t->setVisible(true);
+  t->setPosicionY(460-t->getAltura());
+
+  Texto text("Hace mucho tiempo, hubo un joven muy iluso que queria estudiar Ingenieria en Sistemas.");
+  text.setWrap(47);
+  text.setPosicionX(0);
+  text.setPosicionY(0);
+
+  TextManager* tm = new TextManager(&text, 25, &intro, 100);
+  tm->setPosicionX(15);
+  tm->setPosicionY(15);
+  e.setHUD(new HUD());
+
+  t->addElemento(tm);
+  e.getHUD()->addElemento(t);
+  introMus.reproducir();
+  tm->iniciar();
+
+  bool saltar = false;
+  Uint8* tecla = SDL_GetKeyState(NULL);
+
+  while (tm->isActivo()) {
+    SDL_PumpEvents();
+
+    if (tecla[SDLK_x]){
+      saltar = true;
+      tm->setVelocidad(25);
+      tm->setMute(true);
+    }else{
+      saltar = false;
+      tm->setVelocidad(100);
+      tm->setMute(false);
+      this_thread::sleep_for(chrono::milliseconds(100));
+    }
+  }
+
+  if (!saltar) {
+    this_thread::sleep_for(chrono::milliseconds(3000));
+  }
+
+  text.setTexto("Pero al entrar a la universidad y llegar a  Programacion II, se dio cuenta de que talvezhabia tomado una mala decision.");
+  text.setWrap(44);
+
+  tm->reconstruir(&text, 25, &intro, 100);
+  tm->setPosicionX(15);
+  tm->setPosicionY(15);
+  tm->iniciar();
+
+  saltar = false;
+
+  while (tm->isActivo()) {
+    SDL_PumpEvents();
+
+    if (tecla[SDLK_x]){
+      saltar = true;
+      tm->setVelocidad(25);
+      tm->setMute(true);
+    }else{
+      saltar = false;
+      tm->setVelocidad(100);
+      tm->setMute(false);
+      this_thread::sleep_for(chrono::milliseconds(100));
+    }
+  }
+
+  if (!saltar) {
+    this_thread::sleep_for(chrono::milliseconds(3000));
+  }
+
+  t->setVisible(false);
+  introMus.parar();
+
+  fond = new Imagen("./assets/screens/blank.png");
+  e.setFondo(*fond);
+  this_thread::sleep_for(chrono::milliseconds(1000));
 
   fond = new Imagen("./assets/screens/IntroTitle.png");
   e.setFondo(*fond);
-  intro.reproducir();
-  //this_thread::sleep_for(chrono::milliseconds(5000));
+  intro2.reproducir();
+  this_thread::sleep_for(chrono::milliseconds(5000));
 }
 
 void Runner::iniciarRefresher(){
@@ -236,9 +194,605 @@ void Runner::iniciarRefresher(){
     pantalla->refrescar();
     this_thread::sleep_for(chrono::milliseconds(30));
   }
+}
+
+Menu* Runner::cargarMenu(string nombre){
+  fstream archivo;
+  Menu* m = new Menu();
+
+  string ruta = "./scripts/menus/";
+  ruta += nombre;
+  ruta += ".txt";
+
+  archivo.open(ruta.c_str());
+
+  if (!archivo) {
+    std::cout << "[RUNNER] Error al abrir menu en " << ruta << '\n';
+    delete m;
+    exit(1);
+  }
+
+  int tipo, posX, posY, wrap, size;
+  int aR, aG, aB, iR, iG, iB;
+
+  archivo >> tipo;
+  archivo >> posX;
+  archivo >> posY;
+  archivo >> wrap;
+  archivo >> aR;
+  archivo >> aG;
+  archivo >> aB;
+  archivo >> iR;
+  archivo >> iG;
+  archivo >> iB;
+  archivo >> size;
+
+  unsigned char r1 = aR;
+  unsigned char g1 = aG;
+  unsigned char b1 = aB;
+  unsigned char r2 = iR;
+  unsigned char g2 = iG;
+  unsigned char b2 = iB;
+
+  //SDL_Color a = {aR, aG, aB};
+  //SDL_Color i = {iR, iG, iB};
+
+  SDL_Color a = {r1, g1, b1};
+  SDL_Color i = {r2, g2, b2};
+
+  string s;
+  getline(archivo, s);
+
+  m->setTipo(tipo);
+  m->setWrap(wrap);
+  m->setColorActivo(a);
+  m->setColorInactivo(i);
+  m->setPosicionX(posX);
+  m->setPosicionY(posY);
+
+  while (!archivo.eof()) {
+    Texto t;
+    //archivo >> t;
+    getline(archivo, s);
+
+    t.setTexto(s);
+    t.setSize(size);
+    m->addElemento(t);
+  }
+
+  archivo.close();
+  m->chop();
+  return m;
+}
+
+vector<Ataque> Runner::cargarAtaques(string nombre){
+  fstream archivo;
+  vector<Ataque> ataquesCargados;
+
+  string ruta = "./scripts/ataques/";
+  ruta += nombre;
+  ruta += ".txt";
+
+  archivo.open(ruta.c_str());
+
+  if (!archivo) {
+    std::cout << "[RUNNER] Error al abrir ataque en " << ruta << '\n';
+    exit(1);
+  }
+
+  string buffer;
+  getline(archivo, buffer);
+  int cantidadAtaques = stoi(buffer);
+
+  for (size_t i = 0; i < cantidadAtaques; i++) {
+    getline(archivo, buffer);
+    int cantidadProyectiles = stoi(buffer);
+    string delimitador = ",";
+
+    int** posiciones = new int*[cantidadProyectiles];
+    for (int i = 0; i < cantidadProyectiles; i++) {
+      posiciones[i] = new int[2];
+    }
+
+    for (int i = 0; i < cantidadProyectiles; i++) {
+      getline(archivo, buffer);
+      posiciones[i][0] = stoi(buffer.substr(0, buffer.find(delimitador)));
+      buffer.erase(0, buffer.find(delimitador) + delimitador.length());
+      posiciones[i][1] = stoi(buffer);
+    }
+
+    int** velocidades = new int*[cantidadProyectiles];
+    for (int i = 0; i < cantidadProyectiles; i++) {
+      velocidades[i] = new int[2];
+    }
+
+    for (int i = 0; i < cantidadProyectiles; i++) {
+      getline(archivo, buffer);
+      velocidades[i][0] = stoi(buffer.substr(0, buffer.find(delimitador)));
+
+      buffer.erase(0, buffer.find(delimitador) + delimitador.length());
+      velocidades[i][1] = stoi(buffer);
+    }
+
+    getline(archivo, buffer);
+    bool aleatorio;
+
+    if (buffer == "2") {
+      aleatorio = true;
+    }
+
+    getline(archivo, buffer);
+    Sprite sprite(buffer);
+
+    long vida, sleep1, sleep2, sleep3, duracion;
+    int w, h;
+
+    getline(archivo, buffer);
+    vida = stol(buffer);
+    getline(archivo, buffer);
+    sleep1 = stol(buffer);
+    getline(archivo, buffer);
+    sleep2 = stol(buffer);
+    getline(archivo, buffer);
+    sleep3 = stol(buffer);
+    getline(archivo, buffer);
+    duracion = stol(buffer);
+
+    getline(archivo, buffer);
+    w = stoi(buffer);
+    getline(archivo, buffer);
+    h = stoi(buffer);
+
+    Ataque a(cantidadProyectiles, posiciones, velocidades, aleatorio, sprite, vida, sleep1, sleep2, sleep3, duracion, w, h);
+    ataquesCargados.push_back(a);
+  }
+
+  archivo.close();
+  return ataquesCargados;
+}
+
+vector<string> Runner::cargarDialogo(string nombre){
+  std::cout << nombre << '\n';
+  ifstream archivo2;
+
+  string ruta;
+  ruta = "./scripts/dialogo/";
+  ruta += nombre;
+  ruta += ".txt";
+
+  //std::cout << "Ruta: " << ruta << '\n';
+  archivo2.open(ruta.c_str(), std::ifstream::in);
+  //std::cout << "Intentando abrir archivo..." << '\n';
+  //std::cout << "Archivo abierto." << '\n';
+
+  vector<string> nDialogo;
+
+  if (!archivo2) {
+    std::cout << "[RUNNER] Error al abrir dialogo en ";//<< ruta << '\n';
+    exit(1);
+  }
+
+  string buffer;
+  //std::cout << "Entrandio" << '\n';
+
+  while(!archivo2.eof()){
+    getline(archivo2, buffer);
+    //cout << "Linea: " << buffer << endl;
+    nDialogo.push_back(buffer);
+  }
+
+  //std::cout << "saliendo" << '\n';
+
+  archivo2.close();
+
+  return nDialogo;
+}
+
+Enemigo* Runner::cargarEnemigo(string nombre){
+  fstream archivo;
+
+  string ruta = "./scripts/enemigos/";
+  ruta += nombre;
+  ruta += ".txt";
+
+  archivo.open(ruta.c_str());
+
+  if (!archivo) {
+    std::cout << "[RUNNER] Error al abrir enemigo en " << ruta << '\n';
+    exit(1);
+  }
+
+  string buffer;
+  string satk, sdef, shp, nomb, rutaSprite, rutaSonido, nNombre, sflinch, svelFlinch;
+  int atk, def, hp, flinch, velFlinch;
+
+  getline(archivo, buffer);
+  satk = buffer;
+  getline(archivo, buffer);
+  sdef = buffer;
+  getline(archivo, buffer);
+  shp = buffer;
+  getline(archivo, buffer);
+  nomb = buffer;
+  getline(archivo, buffer);
+  rutaSprite = buffer;
+  getline(archivo, buffer);
+  rutaSonido = buffer;
+  getline(archivo, buffer);
+  nNombre = buffer;
+  getline(archivo, buffer);
+  sflinch = buffer;
+  getline(archivo, buffer);
+  svelFlinch = buffer;
+
+  archivo.close();
+
+  vector<Ataque> ataques = cargarAtaques(nNombre);
+  //std::cout << "Ataques cargados" << '\n';
+  vector<string> dialogo = cargarDialogo(nNombre);
+  //std::cout << "Hola" << '\n';
+
+  atk = stoi(satk);
+  //std::cout << atk << '\n';
+  def = stoi(sdef);
+  //std::cout << def << '\n';
+  hp = stoi(shp);
+  //std::cout << hp << '\n';
+  flinch = stoi(sflinch);
+  //std::cout << flinch << '\n';
+  velFlinch = stoi(svelFlinch);
+  //std::cout << velFlinch << '\n';
+
+  Enemigo* e = new Enemigo(atk, def, hp, nomb, Sprite(rutaSprite), Sonido(rutaSonido), ataques, ataques.size(), dialogo, flinch, velFlinch);
+  //std::cout << "Enemigo generado" << '\n';
+  return e;
+}
+
+void Runner::crearSave(){
+  SDL_Event evento;
+  string nuevoNombre = "";
+  Escenario escenario;
+  escenario.setFondo(Imagen("./assets/screens/black.png"));
+  HUD* hud = new HUD();
+  escenario.setHUD(hud);
+  Menu* teclado = cargarMenu("teclado");
+  hud->addElemento(teclado);
+
+  Texto titulo("Ingresa tu Nombre");
+  titulo.setSize(30);
+  titulo.setPosicionX(50);
+  titulo.setPosicionY(30);
+  hud->addElemento(&titulo);
+
+  Texto* nombre = new Texto(nuevoNombre);
+  nombre->setSize(20);
+  nombre->setPosicionX(50);
+  nombre->setPosicionY(420);
+  hud->addElemento(nombre);
+
+  pantalla->setEscenario(&escenario);
+
+  bool salir = false;
+  teclado->setVisible(true);
+
+  while (!salir) {
+    nombre->setTexto(nuevoNombre);
+    switch (teclado->trap()) {
+      case 0:{
+        nuevoNombre += "Q";
+        break;
+      }
+      case 1:{
+        nuevoNombre += "W";
+        break;
+      }
+      case 2:{
+        nuevoNombre += "E";
+        break;
+      }
+      case 3:{
+        nuevoNombre += "R";
+        break;
+      }
+      case 4:{
+        nuevoNombre += "T";
+        break;
+      }
+      case 5:{
+        nuevoNombre += "Y";
+        break;
+      }
+      case 6:{
+        nuevoNombre += "U";
+        break;
+      }
+      case 7:{
+        nuevoNombre += "I";
+        break;
+      }
+      case 8:{
+        nuevoNombre += "O";
+        break;
+      }
+      case 9:{
+        nuevoNombre += "P";
+        break;
+      }
+      case 10:{
+        nuevoNombre += "A";
+        break;
+      }
+      case 11:{
+        nuevoNombre += "S";
+        break;
+      }
+      case 12:{
+        nuevoNombre += "D";
+        break;
+      }
+      case 13:{
+        nuevoNombre += "F";
+        break;
+      }
+      case 14:{
+        nuevoNombre += "G";
+        break;
+      }
+      case 15:{
+        nuevoNombre += "H";
+        break;
+      }
+      case 16:{
+        nuevoNombre += "J";
+        break;
+      }
+      case 17:{
+        nuevoNombre += "K";
+        break;
+      }
+      case 18:{
+        nuevoNombre += "L";
+        break;
+      }
+      case 19:{
+        nuevoNombre += "Z";
+        break;
+      }
+      case 20:{
+        nuevoNombre += "X";
+        break;
+      }
+      case 21:{
+        nuevoNombre += "C";
+        break;
+      }
+      case 22:{
+        nuevoNombre += "V";
+        break;
+      }
+      case 23:{
+        nuevoNombre += "B";
+        break;
+      }
+      case 24:{
+        nuevoNombre += "N";
+        break;
+      }
+      case 25:{
+        nuevoNombre += "M";
+        break;
+      }
+      case 27:{
+        if (nuevoNombre.size() > 0) {
+          nuevoNombre.pop_back();
+        }
+        break;
+      }
+      case 29:{
+        salir = true;
+        break;
+      }
+    }
+
+    if (!salir){
+      SDL_WaitEvent(&evento);
+    }
+  }
+
+  guardarSave(nuevoNombre, 0);
+  iniciarPartida(nuevoNombre, 0);
+}
+
+void Runner::guardarSave(string nNombre, int nivel){
+  fstream archivo;
+  string ruta = "./saves/";
+  ruta += nNombre;
+  ruta += ".txt";
+
+  archivo.open(ruta.c_str(), fstream::out);
+
+  if (!archivo) {
+    std::cout << "[RUNNER] Error al abrir/guardar savefile en " << ruta << '\n';
+    exit(1);
+  }
+
+  archivo << nivel;
+  archivo.close();
+}
+
+void Runner::iniciarPartida(string nombreJugador, int nivel){
+  Mix_HaltMusic();
+
+  Sonido sonidoUI("./assets/sonidos/ui.wav");
+  Sonido suspenso("./assets/sonidos/suspenso.wav");
+  Sonido jump("./assets/sonidos/jump.wav");
+
+  SDL_Event evento;
+  Escenario escenario;
+  escenario.setFondo(Imagen("./assets/screens/black.png"));
+  HUD* hud = new HUD();
+  escenario.setHUD(hud);
+  pantalla->setEscenario(&escenario);
+
+  switch (nivel) {
+    case 0:{
+      suspenso.reproducir();
+      this_thread::sleep_for(chrono::milliseconds(6830));
+
+      Tablero* tablero = new Tablero();
+      Texto* textoRaw = new Texto(string("???: Umm hey."));
+      TextManager* texto = new TextManager(textoRaw, 25, &sonidoUI, 75);
+      hud->addElemento(tablero);
+      tablero->addElemento(texto);
+      tablero->setPosicionY(460-tablero->getAltura());
+      tablero->setVisible(true);
+
+      texto->trap();
+
+      textoRaw->setTexto(string("???: Oye, estas bien?"));
+      texto->reconstruir(textoRaw, 25, &sonidoUI, 75);
+      texto->trap();
+
+      textoRaw->setTexto(string("* Tu cabeza duele, pero haces un esfuerzo para    levantarte y ver quien te habla."));
+      texto->reconstruir(textoRaw, 25, &sonidoUI, 75);
+      texto->trap();
+
+      Musica musicaTutorial("./assets/musica/tutorial.wav");
+
+      Sonido ropa("./assets/sonidos/ropa.wav");
+      Enemigo* guiaJaguar = cargarEnemigo("tutorial");
+      tablero->setVisible(false);
+
+      ropa.reproducir();
+      this_thread::sleep_for(chrono::milliseconds(5000));
+      escenario.setFondo(Imagen("./assets/screens/batallaTutorial.png"));
+      jump.reproducir();
+
+      textoRaw->setTexto(string("???: Hola!"));
+      texto->reconstruir(textoRaw, 25, &sonidoUI, 75);
+      tablero->setVisible(true);
+      this_thread::sleep_for(chrono::milliseconds(750));
+
+      musicaTutorial.reproducir();
+      texto->trap();
+
+      textoRaw->setTexto(string("???: Soy JOSUE, el GUIA JAGUAR!"));
+      texto->reconstruir(textoRaw, 25, &sonidoUI, 75);
+      texto->trap();
+
+      textoRaw->setTexto(string("- Parece que te quedaste dormido en esa banca...  Dejame adivinar, Progra 2?"));
+      texto->reconstruir(textoRaw, 25, &sonidoUI, 75);
+      texto->trap();
+
+      textoRaw->setTexto(string("- Si, lo se, la ultima semana es bastante dura    El proyecto del INGENIERO OSMAN no es nada facil"));
+      texto->reconstruir(textoRaw, 25, &sonidoUI, 75);
+      texto->trap();
+
+      textoRaw->setTexto(string("- Como lo se? Yo tambien estudio SISTEMAS!"));
+      texto->reconstruir(textoRaw, 25, &sonidoUI, 75);
+      texto->trap();
+
+      textoRaw->setTexto(string("- Tu eres " + nombreJugador + " no?"));
+      texto->reconstruir(textoRaw, 25, &sonidoUI, 75);
+      texto->trap();
+
+      textoRaw->setTexto(string("- Es todo un placer conocerte!"));
+      texto->reconstruir(textoRaw, 25, &sonidoUI, 75);
+      texto->trap();
+
+      textoRaw->setTexto(string("- Me caes bien. Ven, te dare algunos tips para    que domines ese proyecto!"));
+      texto->reconstruir(textoRaw, 25, &sonidoUI, 75);
+      texto->trap();
+      this_thread::sleep_for(chrono::milliseconds(500));
+
+      tablero->setVisible(false);
+      escenario.setFondo(Imagen("./assets/screens/black.png"));
+      jump.reproducir();
+      this_thread::sleep_for(chrono::milliseconds(250));
+      tablero->setAltura(80);
+      tablero->setPosicionY(tablero->getPosicionY() + 50);
+
+      Tablero* tablero2 = new Tablero();
+      Ataque atk = guiaJaguar->getAtaques()[0];
+      tablero2->modoAtaque(NULL);
+      Soul* soul = new Soul();
+      tablero2->setSoul(soul);
+      SDL_Rect bounds;
+
+      while (tablero2->isListo() == false) {
+        this_thread::sleep_for(chrono::milliseconds(100));
+      }
+
+      bounds.w = tablero2->getAnchura();
+      bounds.h = tablero2->getAltura();
+      soul->setBounds(bounds);
+      soul->centrar();
+
+      textoRaw->setTexto(string("Este corazon representa tu FUERZA DE VOLUNTAD     Es todo aquello que te impulsa a seguir adelante."));
+      texto->reconstruir(textoRaw, 25, &sonidoUI, 75);
+      tablero->setVisible(true);
+      tablero2->setVisible(true);
+      Imagen black("./assets/screens/black.png");
+      tablero2->addElemento(soul);
+      hud->addElemento(tablero2);
+      Batalla* batallaTutorial = new Batalla(guiaJaguar, black, NULL, NULL);
+
+      thread ejecucion (&Soul::trap, soul);
+      ejecucion.detach();
+
+      tablero->setVisible(true);
+      jump.reproducir();
+      escenario.setFondo(Imagen("./assets/screens/batallaTutorial.png"));
+
+      texto->iniciar();
+      while (texto->isActivo()) {
+        this_thread::sleep_for(chrono::milliseconds(100));
+      }
+      this_thread::sleep_for(chrono::milliseconds(3000));
+
+      texto->setVisible(false);
+      textoRaw->setTexto(string("- Mientras mas grande sea tu FUERZA DE VOLUNTAD   mas facil te sera vencer tus obstaculos!"));
+      texto->reconstruir(textoRaw, 25, &sonidoUI, 75);
+      texto->setVisible(true);
+      texto->iniciar();
+      while (texto->isActivo()) {
+        this_thread::sleep_for(chrono::milliseconds(100));
+      }
+      this_thread::sleep_for(chrono::milliseconds(3000));
+
+      texto->setVisible(false);
+      textoRaw->setTexto(string("- Como haces a tu FUERZA DE VOLUNTAD mas grande?  Con esferas de poder, por supuesto!"));
+      texto->reconstruir(textoRaw, 25, &sonidoUI, 75);
+      texto->setVisible(true);
+      texto->iniciar();
+      while (texto->isActivo()) {
+        this_thread::sleep_for(chrono::milliseconds(100));
+      }
+      this_thread::sleep_for(chrono::milliseconds(3000));
+
+      texto->setVisible(false);
+      textoRaw->setTexto(string("- Ten, tengo unas para ti. Agarra todas las que   puedas!"));
+      texto->reconstruir(textoRaw, 25, &sonidoUI, 75);
+      texto->setVisible(true);
+      texto->iniciar();
+      while (texto->isActivo()) {
+        this_thread::sleep_for(chrono::milliseconds(100));
+      }
+      this_thread::sleep_for(chrono::milliseconds(3000));
+
+      //guiaJaguar->centrar();
+      //hud->addElemento(guiaJaguar);
+
+
+      break;
+    }
+  }
+
+
 
 }
 
 Runner::~Runner(){
+  Mix_HaltMusic();
   vivo = false;
 }

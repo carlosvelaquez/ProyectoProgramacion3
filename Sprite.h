@@ -1,5 +1,6 @@
 #pragma once
 #include "Imagen.h"
+#include "ElementoGUI.h"
 #include "SDL/SDL.h"
 #include <string>
 
@@ -24,6 +25,7 @@ public:
   void setClip(int, int);
 
   SDL_Surface* toSuperficie();
+  //bool refrescar();
 
   ~Sprite();
 };

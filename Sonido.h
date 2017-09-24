@@ -6,6 +6,7 @@ private:
   Mix_Chunk* sonido;
 
 public:
+  Sonido();
   Sonido(string);
 
   bool reproducir();

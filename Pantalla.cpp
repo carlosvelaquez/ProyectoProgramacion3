@@ -102,11 +102,26 @@ void Pantalla::aplicarSuperficie(SDL_Surface* sup, int x, int y){
 
 }
 
+void Pantalla::fade(int tipo, long duracion){
+  if (duracion == 0) {
+    duracion = 1;
+  }
+
+  if (tipo == 1) {
+    SDL_Surface* superficie2 = SDL_CreateRGBSurface(SDL_HWSURFACE, 640, 480, 32, 0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF);
+    int alpha = 0;
+
+    while(alpha < 255){
+      alpha ++;
+      SDL_SetAlpha(superficie2, SDL_SRCALPHA, alpha);
+      aplicarSuperficie(superficie2, 0, 0);
+      this_thread::sleep_for(chrono::milliseconds(255/duracion));
+    }
+  }
+}
+
 Pantalla::~Pantalla(){
   delete escenario;
-  /*if (superficieActual != NULL) {
-  SDL_FreeSurface(superficieActual);
-}*/
 SDL_FreeSurface(superficie);
 std::cout << "[PANTALLA] Pantalla destruida." << '\n';
 }

@@ -31,3 +31,8 @@ void ElementoGUI::setPosicionX(int posX){
 void ElementoGUI::setPosicionY(int posY){
   posicionY = posY;
 }
+
+void ElementoGUI::centrar(){
+  posicionX = 320 - (anchura/2);
+  posicionY = 240 - (altura/2);
+}

@@ -12,6 +12,7 @@ private:
   long velocidad;
   bool activo;
   bool visible;
+  bool mute = false;
 
 public:
   DesplazadorTexto(Texto, Sonido*, long);
@@ -21,11 +22,13 @@ public:
   long getVelocidad();
   bool isActivo();
   bool isVisible();
+  bool isMuted();
 
   void setTexto(Texto);
   void setSonido(Sonido*);
   void setVelocidad(long);
   void setVisible(bool);
+  void setMute(bool);
 
   void iniciar();
   void desplazar();

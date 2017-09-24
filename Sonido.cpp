@@ -1,5 +1,10 @@
 #include "Sonido.h"
 
+Sonido::Sonido(){
+  ruta = "./assets/sonidos/ui.wav";
+  cargar();
+}
+
 Sonido::Sonido(string nRuta){
   ruta = nRuta;
   cargar();

@@ -88,7 +88,7 @@ SDL_Surface* Menu::toSuperficie(){
       SDL_BlitSurface(elementos[i].toSuperficie(), NULL, superficie, &offset);
 
       if (tipo == 1) {
-        if (i%wrap == 0 && i != 0) {
+        if ((i+1)%wrap == 0 && i != 0) {
           multVertical = 0;
           multHorizontal ++;
         }else{
@@ -96,7 +96,7 @@ SDL_Surface* Menu::toSuperficie(){
         }
 
       }else if (tipo == 2){
-        if (i%wrap == 0 && i != 0) {
+        if ((i+1)%wrap == 0 && i != 0) {
           multVertical++;
           multHorizontal = 0;
         }else{
@@ -153,13 +153,13 @@ int Menu::trap(){
                 break;
               }
               case SDLK_LEFT:{
-                for (size_t i = 0; i <= wrap; i++) {
+                for (size_t i = 0; i < wrap; i++) {
                   indiceDown();
                 };
                 break;
               }
               case SDLK_RIGHT:{
-                for (size_t i = 0; i <= wrap; i++) {
+                for (size_t i = 0; i < wrap; i++) {
                   indiceUp();
                 };
                 break;
@@ -193,13 +193,13 @@ int Menu::trap(){
                 break;
               }
               case SDLK_UP:{
-                for (size_t i = 0; i <= wrap; i++) {
+                for (size_t i = 0; i < wrap; i++) {
                   indiceDown();
                 };
                 break;
               }
               case SDLK_DOWN:{
-                for (size_t i = 0; i <= wrap; i++) {
+                for (size_t i = 0; i < wrap; i++) {
                   indiceUp();
                 };
                 break;
@@ -234,6 +234,10 @@ int Menu::trap(){
 
 void Menu::addElemento(Texto nElemento){
   elementos.push_back(nElemento);
+}
+
+void Menu::chop(){
+  elementos.pop_back();
 }
 
 void Menu::clear(){

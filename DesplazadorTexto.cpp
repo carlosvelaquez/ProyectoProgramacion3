@@ -24,6 +24,10 @@ bool DesplazadorTexto::isActivo(){
   return activo;
 }
 
+bool DesplazadorTexto::isMuted(){
+  return mute;
+}
+
 void DesplazadorTexto::setTexto(Texto nTexto){
   texto = nTexto;
 }
@@ -37,12 +41,12 @@ void DesplazadorTexto::setVelocidad(long nVelocidad){
 }
 
 void DesplazadorTexto::iniciar(){
+  activo = true;
   thread desplazador (&DesplazadorTexto::desplazar, this);
   desplazador.detach();
 }
 
 void DesplazadorTexto::desplazar(){
-  activo = true;
   Texto tempTexto = texto;
   string textoActual;
 
@@ -56,7 +60,7 @@ void DesplazadorTexto::desplazar(){
     texto.setTexto(textoActual);
     texto.refrescar();
 
-    if (tempTexto.getTexto()[i] != ' ') {
+    if (tempTexto.getTexto()[i] != ' ' && mute == false) {
       sonido->reproducir();
     }
 
@@ -71,7 +75,7 @@ SDL_Surface* DesplazadorTexto::toSuperficie(){
   if (visible) {
     return texto.toSuperficie();
   }else{
-    return NULL;  
+    return NULL;
   }
 }
 
@@ -85,4 +89,8 @@ bool DesplazadorTexto::isVisible(){
 
 void DesplazadorTexto::setVisible(bool nVisible){
   visible = nVisible;
+}
+
+void DesplazadorTexto::setMute(bool nMute){
+  mute = nMute;
 }

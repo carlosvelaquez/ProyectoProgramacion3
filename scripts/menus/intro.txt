@@ -1,0 +1,15 @@
+1
+213
+200
+11
+255
+247
+78
+255
+255
+255
+25
+Nuevo Juego
+Cargar Savefile
+Opciones
+Salir

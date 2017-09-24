@@ -3,7 +3,7 @@
 Texto::Texto(){
   texto = "Placeholder";
   size = 20;
-  wrap = 10;
+  wrap = 50;
   color = {255, 255, 255};
   rutaFont = "./assets/fonts/DTM-Mono.ttf";
   superficies.clear();
@@ -14,7 +14,7 @@ Texto::Texto(){
 Texto::Texto(string nTexto){
   texto = nTexto;
   size = 20;
-  wrap = 10;
+  wrap = 50;
   color = {255, 255, 255};
   rutaFont = "./assets/fonts/DTM-Mono.ttf";
   superficies.clear();
@@ -25,7 +25,7 @@ Texto::Texto(string nTexto){
 Texto::Texto(string nTexto, int nSize){
   texto = nTexto;
   size = nSize;
-  wrap = 10;
+  wrap = 50;
   color = {255, 255, 255};
   rutaFont = "./assets/fonts/DTM-Mono.ttf";
   superficies.clear();
