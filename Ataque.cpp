@@ -1,6 +1,8 @@
-#include "Ataque.h"
 
-Ataque::Ataque(int nCantidadProyectiles, int** nPosiciones, int** nVelocidades, bool nAleatorio, Sprite nSpriteProyectiles, long nVidaProyectiles, long nDuracion, long nSleepProyectiles, long nSleepRondas, long nSleepInicial, int nAnchura, int nAltura){
+#include "Ataque.h"
+#include "Proyectil.h"
+
+Ataque::Ataque(int nCantidadProyectiles, int * * nPosiciones, int * * nVelocidades, bool nAleatorio, Sprite nSpriteProyectiles, long nVidaProyectiles, long nDuracion, long nSleepProyectiles, long nSleepRondas, long nSleepInicial, int nAnchura, int nAltura){
   cantidadProyectiles = nCantidadProyectiles;
   posiciones = nPosiciones;
   velocidades = nVelocidades;
@@ -13,112 +15,116 @@ Ataque::Ataque(int nCantidadProyectiles, int** nPosiciones, int** nVelocidades, 
   duracion = nDuracion;
   anchuraTablero = nAnchura;
   alturaTablero = nAltura;
+
+  proyectilesActivos = new vector<Proyectil*>();
 }
 
-int Ataque::getCantidadProyectiles(){
+int Ataque::getCantidadProyectiles() {
   return cantidadProyectiles;
 }
 
-int** Ataque::getPosiciones(){
+int * * Ataque::getPosiciones() {
   return posiciones;
 }
 
-int** Ataque::getVelocidades(){
+int * * Ataque::getVelocidades() {
   return velocidades;
 }
 
-int** Ataque::getPosicionesDecoraciones(){
+int * * Ataque::getPosicionesDecoraciones() {
   return posicionesDecoraciones;
 }
 
-bool Ataque::isAleatorio(){
+bool Ataque::isAleatorio() {
   return aleatorio;
 }
 
-Sprite* Ataque::getDecoraciones(){
+Sprite * Ataque::getDecoraciones() {
   return decoraciones;
 }
 
-long Ataque::getVidaProyectiles(){
+Sprite Ataque::getSpriteProyectiles() {
+}
+
+long Ataque::getVidaProyectiles() {
   return vidaProyectiles;
 }
 
-long Ataque::getDuracion(){
+long Ataque::getDuracion() {
   return duracion;
 }
 
-long Ataque::getSleepProyectiles(){
+long Ataque::getSleepProyectiles() {
   return sleepProyectiles;
 }
 
-long Ataque::getSleepRondas(){
+long Ataque::getSleepRondas() {
   return sleepProyectiles;
 }
 
-long Ataque::getSleepInicial(){
+long Ataque::getSleepInicial() {
   return sleepInicial;
 }
 
-void Ataque::setCantidadProyectiles(int nCantidadProyectiles){
+void Ataque::setCantidadProyectiles(int nCantidadProyectiles) {
   cantidadProyectiles = nCantidadProyectiles;
 }
 
-void Ataque::setPosiciones(int** nPosiciones){
+void Ataque::setPosiciones(int * * nPosiciones) {
   posiciones = nPosiciones;
 }
-void Ataque::setVelocidades(int** nVelocidades){
+
+void Ataque::setVelocidades(int * * nVelocidades) {
   velocidades = nVelocidades;
 }
 
-void Ataque::setDecoraciones(Sprite* nDecoraciones){
+void Ataque::setDecoraciones(Sprite * nDecoraciones) {
   decoraciones = nDecoraciones;
 }
 
-void Ataque::setPosicionesDecoraciones(int** nPosicionesDecoraciones){
+void Ataque::setPosicionesDecoraciones(int * * nPosicionesDecoraciones) {
   posicionesDecoraciones = nPosicionesDecoraciones;
 }
 
-void Ataque::setAleatorio(bool nAleatorio){
+void Ataque::setAleatorio(bool nAleatorio) {
   aleatorio = nAleatorio;
 }
 
-void Ataque::setSpriteProyectiles(Sprite nSpriteProyectiles){
+void Ataque::setSpriteProyectiles(Sprite nSpriteProyectiles) {
   spriteProyectiles = nSpriteProyectiles;
 }
 
-void Ataque::setVidaProyectiles(long nVidaProyectiles){
+void Ataque::setVidaProyectiles(long nVidaProyectiles) {
   vidaProyectiles = nVidaProyectiles;
 }
 
-void Ataque::setDuracion(long nDuracion){
+void Ataque::setDuracion(long nDuracion) {
   duracion = nDuracion;
 }
 
-void Ataque::setSleepProyectiles(long nSleepProyectiles){
+void Ataque::setSleepProyectiles(long nSleepProyectiles) {
   sleepProyectiles = nSleepProyectiles;
 }
 
-void Ataque::setSleepRondas(long nSleepRondas){
+void Ataque::setSleepRondas(long nSleepRondas) {
   sleepRondas = nSleepRondas;
 }
 
-void Ataque::setSleepInicial(long nSleepInicial){
+void Ataque::setSleepInicial(long nSleepInicial) {
   sleepInicial = nSleepInicial;
 }
 
-void Ataque::activar(){
+void Ataque::activar() {
   activo = true;
   thread ejecucion (&Ataque::ejecutar, this);
   ejecucion.detach();
+
+  thread cronom (&Ataque::cronometro, this);
+  cronom.detach();
 }
 
-void Ataque::ejecutar(){
-  int cont = 0;
-  int* contador = &cont;
-
-  thread cronom (&Ataque::cronometro, this, contador);
-
-  while (*contador < duracion) {
+void Ataque::ejecutar() {
+  while (activo) {
     for (int i = 0; i < cantidadProyectiles; i++) {
       int posX, posY, velX, velY;
       posX = posiciones[i][0];
@@ -126,50 +132,55 @@ void Ataque::ejecutar(){
       velX = velocidades[i][0];
       velY = velocidades[i][1];
 
-      Proyectil p(spriteProyectiles, posX, posY, velX, velY, vidaProyectiles);
-      proyectilesActivos.push_back(p);
-      proyectilesActivos.at(proyectilesActivos.size() - 1).activar();
+      Proyectil* p = new Proyectil(spriteProyectiles, posX, posY, velX, velY, vidaProyectiles);
+      proyectilesActivos->push_back(p);
+      p->activar();
       this_thread::sleep_for(chrono::milliseconds(sleepProyectiles));
     }
+
     this_thread::sleep_for(chrono::milliseconds(sleepRondas));
   }
 
-  cronom.join();
-  proyectilesActivos.clear();
-  delete contador;
+  for (int i = 0; i < proyectilesActivos->size(); i++) {
+    delete proyectilesActivos->at(i);
+  }
+
+  proyectilesActivos->clear();
+}
+
+void Ataque::cronometro() {
+  for (size_t i = 0; i < duracion; i++) {
+    this_thread::sleep_for(chrono::milliseconds(1));
+  }
   activo = false;
 }
 
-void Ataque::cronometro(int* tiempo){
-  while (*tiempo < duracion) {
-    *tiempo ++;
-    this_thread::sleep_for(chrono::milliseconds(1));
-  }
+void Ataque::interrumpir() {
+  activo = false;
 }
 
-int Ataque::getAnchuraTablero(){
+int Ataque::getAnchuraTablero() {
   return anchuraTablero;
 }
 
-int Ataque::getAlturaTablero(){
+int Ataque::getAlturaTablero() {
   return alturaTablero;
 }
 
-
-void Ataque::setAnchuraTablero(int nAnchura){
+void Ataque::setAnchuraTablero(int nAnchura) {
   anchuraTablero = nAnchura;
 }
 
-void Ataque::setAlturaTablero(int nAltura){
+void Ataque::setAlturaTablero(int nAltura) {
   alturaTablero = nAltura;
 }
 
-
 Ataque::~Ataque(){
   /*for (int i = 0; i < cantidadProyectiles; i++) {
-    delete[] posiciones;
-    delete[] velocidades;
-  }
-
-  delete decoraciones;*/
+  delete[] posiciones;
+  delete[] velocidades;
 }
+
+delete decoraciones;*/
+}
+

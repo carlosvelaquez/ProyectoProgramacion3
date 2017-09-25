@@ -1,4 +1,8 @@
+
 #include "Tablero.h"
+#include "Proyectil.h"
+#include "Soul.h"
+#include "Ataque.h"
 
 Tablero::Tablero(){
   modo = 1;
@@ -10,41 +14,50 @@ Tablero::Tablero(){
   posicionX = 20;
   posicionY = 260;
   visible = false;
+  sonidoDano = Sonido(("./assets/sonidos/dano.wav"));
 }
 
-int Tablero::getModo(){
+int Tablero::getModo() {
   return modo;
 }
 
-vector<Proyectil>* Tablero::getProyectiles(){
+vector<Proyectil*> * Tablero::getProyectiles() {
   return proyectiles;
 }
 
-vector<ElementoGUI*> Tablero::getElementos(){
+vector<ElementoGUI*> Tablero::getElementos() {
   return elementosGUI;
 }
 
-bool Tablero::isListo(){
+bool Tablero::isListo() {
   return listo;
 }
 
-bool Tablero::isVisible(){
+Soul * Tablero::getSoul() {
+  return soul;
+}
+
+bool Tablero::isVisible() {
   return visible;
 }
 
-void Tablero::addElemento(ElementoGUI* nElemento){
+void Tablero::addElemento(ElementoGUI * nElemento) {
   elementosGUI.push_back(nElemento);
 }
-void Tablero::setProyectiles(vector<Proyectil>* nProyectiles){
 
+void Tablero::setProyectiles(vector<Proyectil*> * nProyectiles) {
   proyectiles = nProyectiles;
 }
 
-void Tablero::setVisible(bool nVisible){
+void Tablero::setSoul(Soul * nSoul) {
+  soul = nSoul;
+}
+
+void Tablero::setVisible(bool nVisible) {
   visible = nVisible;
 }
 
-SDL_Surface* Tablero::toSuperficie(){
+SDL_Surface * Tablero::toSuperficie() {
   if (!visible) {
     return NULL;
   }
@@ -78,10 +91,10 @@ SDL_Surface* Tablero::toSuperficie(){
       if (proyectiles != NULL) {
         for (int i = 0; i < proyectiles->size(); i++) {
           SDL_Rect offset2;
-          offset2.x = proyectiles->at(i).getPosicionX();
-          offset2.y = proyectiles->at(i).getPosicionY();
+          offset2.x = proyectiles->at(i)->getPosicionX();
+          offset2.y = proyectiles->at(i)->getPosicionY();
 
-          SDL_BlitSurface(proyectiles->at(i).getSprite().toSuperficie(), NULL, superficie, &offset2);
+          SDL_BlitSurface(proyectiles->at(i)->getSprite().toSuperficie(), NULL, superficie, &offset2);
         }
       }
 
@@ -92,20 +105,20 @@ SDL_Surface* Tablero::toSuperficie(){
   return superficie;
 }
 
-bool Tablero::refrescar(){
+bool Tablero::refrescar() {
   cout << "[TABLERO] Refrescando..." << endl;
   return true;
 }
 
-void Tablero::modoAtaque(Ataque* ataque){
+void Tablero::modoAtaque(Ataque * ataque) {
   if (modo == 2) {
     std::cout << "[TABLERO] Orden de cambiar a modo ataque recibida, pero el tablero ya está en modo ataque." << '\n';
   }else{
     std::cout << "[TABLERO] Cambiando a modo ataque." << '\n';
 
     if (ataque != NULL) {
-      thread ejecucion2 (&Tablero::activar, this, ataque);
-      ejecucion2.detach();
+      //thread ejecucion2 (&Tablero::activar, this, ataque);
+      //ejecucion2.detach();
       thread ejecucion (&Tablero::cambiarTamano, this, ataque->getAnchuraTablero(), ataque->getAlturaTablero());
       ejecucion.detach();
     }else{
@@ -120,7 +133,7 @@ void Tablero::modoAtaque(Ataque* ataque){
   }
 }
 
-void Tablero::modoDisplay(){
+void Tablero::modoDisplay() {
   if (modo == 1) {
     std::cout << "[TABLERO] Orden de cambiar a modo display recibida, pero el tablero ya está en modo display." << '\n';
   }else{
@@ -134,20 +147,45 @@ void Tablero::modoDisplay(){
   }
 }
 
-void Tablero::activar(Ataque* ataque){
-  proyectiles = &(ataque->proyectilesActivos);
-  long contador;
+void Tablero::activar(Ataque * ataque, int atk) {
+  cout << "[TABLERO] Activando ataque..." << endl;
+  proyectiles = ataque->proyectilesActivos;
+  int cantidadProyectiles = ataque->proyectilesActivos->size();
+  cout << "[TABLERO] Cantidad de proyectiles: " <<  cantidadProyectiles << endl;
 
-  /*while (contador < ataque->getDuracion()) {
-  contador++;
-  this_thread::sleep_for(chrono::milliseconds(1));
+  ataque->activar();
+
+  while (ataque->activo) {
+    for (int i = 0; i < proyectiles->size(); i++) {
+      Proyectil* p = proyectiles->at(i);
+      int posXP, posYP, posXS, posYS;
+
+      posXP = p->getPosicionX();
+      posYP = p->getPosicionY();
+      posXS = soul->getPosicionX();
+      posYS = soul->getPosicionX();
+
+      //cout << posXP << " - " << posYP << " - " << posXS << " - " << posYS << " - " << endl;
+
+      if ((posXS + 8) >= posXP && (posXS + 8) <= (posXP + p->getAnchura())) {
+        if ((posYS + 8) >= posYP && (posYS + 8) <= (posYP + p->getAltura())) {
+          soul->blink();
+          //sonidoDano.reproducir();
+          soul->setHP(soul->getHP() - atk);
+          this_thread::sleep_for(chrono::milliseconds(250));
+        }
+      }
+    }
+    this_thread::sleep_for(chrono::milliseconds(100));
+  }
+
+  proyectiles = NULL;
+  std::cout << "[TABLERO] Ataque terminado." << '\n';
+  soul->terminarTrap();
+  //modoDisplay();
 }
 
-//std::cout << "[TABLERO] Ataque terminado." << '\n';
-//modoDisplay();*/
-}
-
-void Tablero::cambiarTamano(int nAnchura, int nAltura){
+void Tablero::cambiarTamano(int nAnchura, int nAltura) {
   if (!listo) {
     std::cout << "[TABLERO] El tablero tiene una orden de cambio de tamaño pendiente." << '\n';
   }else{
@@ -193,14 +231,9 @@ void Tablero::cambiarTamano(int nAnchura, int nAltura){
   }
 }
 
-Soul* Tablero::getSoul(){
-  return soul;
-}
-
-void Tablero::setSoul(Soul* nSoul){
-  soul = nSoul;
-}
-
 Tablero::~Tablero(){
-  delete proyectiles;
+  if (proyectiles != NULL) {
+    delete proyectiles;
+  }
 }
+

@@ -1,0 +1,9 @@
+25
+2
+250
+Ing. Osman
+./assets/sprites/guia.png
+./assets/sonidos/guia.wav
+boss1
+20
+200

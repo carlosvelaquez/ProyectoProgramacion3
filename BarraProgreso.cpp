@@ -1,3 +1,4 @@
+
 #include "BarraProgreso.h"
 
 BarraProgreso::BarraProgreso(){
@@ -31,47 +32,47 @@ BarraProgreso::BarraProgreso(float nPorcentaje, float nPorcentajeMax, Uint32 nFo
   visible  = false;
 }
 
-Uint32 BarraProgreso::getColorFondo(){
+Uint32 BarraProgreso::getColorFondo() {
   return colorFondo;
 }
 
-Uint32 BarraProgreso::getColorProgreso(){
+Uint32 BarraProgreso::getColorProgreso() {
   return colorProgreso;
 }
 
-float BarraProgreso::getPorcentaje(){
+float BarraProgreso::getPorcentaje() {
   return porcentaje;
 }
 
-float BarraProgreso::getPorcentajeMax(){
+float BarraProgreso::getPorcentajeMax() {
   return porcentajeMax;
 }
 
-bool BarraProgreso::isVisible(){
+bool BarraProgreso::isVisible() {
   return visible;
 }
 
-void BarraProgreso::setColorFondo(Uint32 nFondo){
+void BarraProgreso::setColorFondo(Uint32 nFondo) {
   colorFondo = nFondo;
 }
 
-void BarraProgreso::setColorProgreso(Uint32 nProgreso){
+void BarraProgreso::setColorProgreso(Uint32 nProgreso) {
   colorProgreso = nProgreso;
 }
 
-void BarraProgreso::setPorcentaje(float nPorcentaje){
+void BarraProgreso::setPorcentaje(float nPorcentaje) {
   porcentaje = nPorcentaje;
 }
 
-void BarraProgreso::setPorcentajeMax(float nPorcentajeMax){
+void BarraProgreso::setPorcentajeMax(float nPorcentajeMax) {
   porcentajeMax = nPorcentajeMax;
 }
 
-void BarraProgreso::setVisible(bool nVisible){
+void BarraProgreso::setVisible(bool nVisible) {
   visible = nVisible;
 }
 
-SDL_Surface* BarraProgreso::toSuperficie(){
+SDL_Surface * BarraProgreso::toSuperficie() {
   if (visible) {
     SDL_Surface* superficie = SDL_CreateRGBSurface(SDL_HWSURFACE, 640, 480, 32, 0x000000FF, 0x0000FF00, 0x00FF0000, 0xFF000000);
 
@@ -95,6 +96,7 @@ SDL_Surface* BarraProgreso::toSuperficie(){
   }
 }
 
-bool BarraProgreso::refrescar(){
+bool BarraProgreso::refrescar() {
   std::cout << "[BarraProgreso] Refrescando..." << '\n';
 }
+

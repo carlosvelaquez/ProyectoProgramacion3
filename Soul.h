@@ -4,40 +4,46 @@
 #include <vector>
 #include <thread>
 
-class Soul : public ElementoGUI{
-private:
-  Sprite sprite;
-  int velocidad;
-  int velocidadBlink;
-  long duracionBlink;
-  bool visible;
-  bool salirTrap;
+class Soul : public ElementoGUI {
+  private:
+    Sprite sprite;
 
-  SDL_Rect bounds;
+    int velocidad;
+    int velocidadBlink;
+    long duracionBlink;
 
-public:
-  Soul();
+    bool visible;
+    bool salirTrap;
 
-  Sprite getSprite();
-  int getVelocidad();
-  int getVelocidadBlink();
-  long getDuracionBlink();
+    int hp;
+    SDL_Rect bounds;
 
-  void setSprite(Sprite);
-  void setVelocidad(int);
-  void setVelocidadBlink(int);
-  void setDuracionBlink(long);
 
-  void trap();
-  void blink();
-  void comenzarBlink();
-  void mover(int);
-  void terminarTrap();
-  void centrar();
+  public:
+    Soul();
 
-  SDL_Rect getBounds();
-  void setBounds(SDL_Rect);
+    Sprite getSprite();
+    int getVelocidad();
+    int getVelocidadBlink();
+    long getDuracionBlink();
+    int getHP();
 
-  SDL_Surface* toSuperficie();
-  bool refrescar();
+    void setSprite(Sprite nSprite);
+    void setVelocidad(int nVelocidad);
+    void setVelocidadBlink(int );
+    void setDuracionBlink(long );
+    void setHP(int nHP);
+
+    void trap();
+    void blink();
+    void comenzarBlink();
+    void mover(int direccion);
+    void terminarTrap();
+    void centrar();
+
+    SDL_Rect getBounds();
+    void setBounds(SDL_Rect nBounds);
+    SDL_Surface* toSuperficie();
+    bool refrescar();
+
 };

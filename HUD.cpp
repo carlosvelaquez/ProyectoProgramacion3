@@ -1,4 +1,6 @@
+
 #include "HUD.h"
+#include "ElementoGUI.h"
 
 HUD::HUD(){
   elementos.clear();
@@ -8,19 +10,19 @@ HUD::HUD(vector<ElementoGUI*> nElementos){
   elementos = nElementos;
 }
 
-void HUD::addElemento(ElementoGUI* nElemento){
+void HUD::addElemento(ElementoGUI * nElemento) {
   elementos.push_back(nElemento);
 }
 
-vector<ElementoGUI*> HUD::getElementos(){
+vector<ElementoGUI*> HUD::getElementos() {
   return elementos;
 }
 
-void HUD::setElementos(vector<ElementoGUI*> nElementos){
+void HUD::setElementos(vector<ElementoGUI*> nElementos) {
   elementos = nElementos;
 }
 
-void HUD::removeElemento(int indice){
+void HUD::removeElemento(int indice) {
   elementos.erase(elementos.begin() + indice);
 }
 
@@ -29,3 +31,4 @@ HUD::~HUD(){
     delete elementos[i];
   }
 }
+

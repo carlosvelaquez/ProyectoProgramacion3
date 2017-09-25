@@ -1,3 +1,4 @@
+
 #include "Proyectil.h"
 
 Proyectil::Proyectil(Sprite nSprite, int posX, int posY, int velX, int velY, long vid){
@@ -6,6 +7,8 @@ Proyectil::Proyectil(Sprite nSprite, int posX, int posY, int velX, int velY, lon
   posicionY = posY;
   velocidadX = velX;
   velocidadY = velY;
+  anchura = 10;
+  altura = 10;
   vida = vid;
 }
 
@@ -18,72 +21,63 @@ Proyectil::Proyectil(Sprite nSprite, int posX, int posY){
   vida = 1000;
 }
 
-Sprite Proyectil::getSprite(){
+Sprite Proyectil::getSprite() {
   return sprite;
 }
 
-/*int Proyectil::getAnchura(){
-  return anchura;
-}
-
-int Proyectil::getAltura(){
-  return altura;
-}*/
-
-int Proyectil::getVelocidadX(){
+//int getAnchura();
+//int getAltura();
+int Proyectil::getVelocidadX() {
   return velocidadX;
 }
 
-int Proyectil::getVelocidadY(){
+int Proyectil::getVelocidadY() {
   return velocidadY;
 }
 
-/*int Proyectil::getPosicionX(){
-  return posicionX;
-}
-
-int Proyectil::getPosicionY(){
-  return posicionY;
-}*/
-
-void Proyectil::setSprite(Sprite nSprite){
+//int getPosicionX();
+//int getPosicionY();
+void Proyectil::setSprite(Sprite nSprite) {
   sprite = nSprite;
 }
 
-/*void Proyectil::setPosicionX(int posX){
-  posicionX = posX;
-}
-
-void Proyectil::setPosicionY(int posY){
-  posicionY = posY;
-}*/
-
-void Proyectil::setVelocidadX(int velX){
+void Proyectil::setVelocidadX(int velX) {
   velocidadX = velX;
 }
 
-void Proyectil::setVelocidadY(int velY){
+void Proyectil::setVelocidadY(int velY) {
   velocidadY = velY;
 }
 
-void Proyectil::activar(){
+//void setPosicionX(int);
+//void setPosicionY(int);
+void Proyectil::activar() {
   activo = true;
   thread ejecucion (&Proyectil::ejecutar, this);
   ejecucion.detach();
 }
 
-void Proyectil::ejecutar(){
-  for (int i = 0; i < vida; i++) {
+void Proyectil::ejecutar() {
+  visible = true;
+
+  for (int i = 0; i < vida/50; i++) {
     posicionX += velocidadX;
     posicionY += velocidadY;
-    this_thread::sleep_for(chrono::milliseconds(1));
+    this_thread::sleep_for(chrono::milliseconds(50));
   }
+
+  visible = false;
 }
 
-SDL_Surface* Proyectil::toSuperficie(){
+SDL_Surface * Proyectil::toSuperficie() {
+  if (!visible) {
+    return NULL;
+  }
+
   return sprite.toSuperficie();
 }
 
-bool Proyectil::refrescar(){
+bool Proyectil::refrescar() {
   return true;
 }
+

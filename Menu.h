@@ -2,6 +2,7 @@
 #include "ElementoGUI.h"
 #include <vector>
 #include "Texto.h"
+#include "Sonido.h"
 
 using namespace std;
 
@@ -16,6 +17,9 @@ private:
 
   SDL_Color colorActivo;
   SDL_Color colorInactivo;
+
+  Sonido* sonidoMove;
+  Sonido* sonidoSelect;
 
 public:
   Menu();

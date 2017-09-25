@@ -1,91 +1,15 @@
 #include "Runner.h"
+#include "Pantalla.h"
+#include "Menu.h"
+#include "Ataque.h"
+#include "Enemigo.h"
 
 Runner::Runner(){
   pantalla = new Pantalla(480, 640);
   vivo = true;
 }
 
-int Runner::run(){
-  bool continuar = true;
-
-  if(SDL_Init(SDL_INIT_EVERYTHING) == -1){
-    std::cout << "[RUNNER] Error al inicializar SDL." << '\n';
-  }
-
-  if (TTF_Init() == -1) {
-    std::cout << "[RUNNER] Error al inicializar TTF." << '\n';
-  }
-
-  if(Mix_OpenAudio(22050, MIX_DEFAULT_FORMAT, 2, 4096) == -1){
-    std::cout << "[RUNNER] Error al inicializar audio." << '\n';
-    return 1;
-  }
-
-  SDL_Event evento;
-
-  std::cout << "[RUNNER] Cargando assets..." << '\n';
-
-  Imagen* fond = new Imagen("./assets/screens/IntroMenu.png");
-  Escenario eMenu;
-  Menu* mn = cargarMenu("intro");
-  Soul* s = new Soul();
-
-  eMenu.setFondo(*fond);
-  eMenu.setHUD(new HUD());
-
-  eMenu.getHUD()->addElemento(mn);
-  mn->setVisible(true);
-
-  Sonido sonidoIntro("./assets/sonidos/intro.wav");
-  Musica musicaMenu("./assets/musica/menu.wav");
-
-  std::cout << "[RUNNER] Assets cargados." << '\n';
-  std::cout << "[RUNNER] Iniciando intro..." << '\n';
-  playIntro();
-
-  musicaMenu.reproducir();
-  pantalla->setEscenario(&eMenu);
-
-  while (continuar) {
-    switch (mn->trap()) {
-      case 0:{
-        std::cout << "[RUNNER] Entrando a creación de save." << '\n';
-        crearSave();
-        break;
-      }
-      case 1:{
-        std::cout << "[RUNNER] Entrando a carga de save." << '\n';
-        //cargarSave():
-        break;
-      }
-      case 2:{
-        std::cout << "[RUNNER] Opciones no implementadas." << '\n';
-        break;
-      }
-      case 3:{
-        std::cout << "[RUNNER] Saliendo del menú principal." << '\n';
-        continuar = false;
-        break;
-      }
-    }
-
-    if (continuar) {
-      SDL_WaitEvent(&evento);
-    }
-  }
-
-  std::cout << "[RUNNER] Cerrando todo y saliendo..." << '\n';
-  vivo = false;
-  this_thread::sleep_for(chrono::milliseconds(1000));
-
-  TTF_Quit();
-  Mix_CloseAudio();
-  SDL_Quit();
-
-  return 0;
-}
-
-void Runner::playIntro(){
+void Runner::playIntro() {
   Escenario e;
   Imagen* fond = new Imagen("./assets/screens/cargando.png");
   e.setFondo(*fond);
@@ -103,19 +27,19 @@ void Runner::playIntro(){
   Sonido intro("./assets/sonidos/ui.wav");
   Sonido intro2("./assets/sonidos/intro.wav");
 
-  fond = new Imagen("./assets/screens/blank.png");
+  fond = new Imagen("./assets/screens/intro.png");
   e.setFondo(*fond);
   this_thread::sleep_for(chrono::milliseconds(1000));
   Tablero* t = new Tablero();
   t->setVisible(true);
   t->setPosicionY(460-t->getAltura());
 
-  Texto text("Hace mucho tiempo, hubo un joven muy iluso que queria estudiar Ingenieria en Sistemas.");
+  Texto text("Hace mucho tiempo, hubo un joven muy iluso que entro a estudiar Ingenieria en Sistemas.");
   text.setWrap(47);
   text.setPosicionX(0);
   text.setPosicionY(0);
 
-  TextManager* tm = new TextManager(&text, 25, &intro, 100);
+  TextManager* tm = new TextManager(&text, 25, &intro, 70);
   tm->setPosicionX(15);
   tm->setPosicionY(15);
   e.setHUD(new HUD());
@@ -150,7 +74,7 @@ void Runner::playIntro(){
   text.setTexto("Pero al entrar a la universidad y llegar a  Programacion II, se dio cuenta de que talvezhabia tomado una mala decision.");
   text.setWrap(44);
 
-  tm->reconstruir(&text, 25, &intro, 100);
+  tm->reconstruir(&text, 25, &intro, 70);
   tm->setPosicionX(15);
   tm->setPosicionY(15);
   tm->iniciar();
@@ -189,14 +113,131 @@ void Runner::playIntro(){
   this_thread::sleep_for(chrono::milliseconds(5000));
 }
 
-void Runner::iniciarRefresher(){
+void Runner::iniciarRefresher() {
   while (vivo) {
     pantalla->refrescar();
     this_thread::sleep_for(chrono::milliseconds(30));
   }
 }
 
-Menu* Runner::cargarMenu(string nombre){
+int Runner::run() {
+  bool continuar = true;
+
+  if(SDL_Init(SDL_INIT_EVERYTHING) == -1){
+    std::cout << "[RUNNER] Error al inicializar SDL." << '\n';
+  }
+
+  if (TTF_Init() == -1) {
+    std::cout << "[RUNNER] Error al inicializar TTF." << '\n';
+  }
+
+  if(Mix_OpenAudio(22050, MIX_DEFAULT_FORMAT, 2, 4096) == -1){
+    std::cout << "[RUNNER] Error al inicializar audio." << '\n';
+    return 1;
+  }
+
+  std::cout << "[RUNNER] Cargando assets..." << '\n';
+
+  Imagen* fond = new Imagen("./assets/screens/IntroMenu.png");
+  Escenario eMenu;
+  Menu* mn = cargarMenu("intro");
+  Soul* s = new Soul();
+
+  eMenu.setFondo(*fond);
+  eMenu.setHUD(new HUD());
+
+  eMenu.getHUD()->addElemento(mn);
+  mn->setVisible(true);
+
+  Sonido sonidoIntro("./assets/sonidos/intro.wav");
+  Musica musicaMenu("./assets/musica/menu.wav");
+
+  std::cout << "[RUNNER] Assets cargados." << '\n';
+  std::cout << "[RUNNER] Iniciando intro..." << '\n';
+  playIntro();
+
+  musicaMenu.reproducir();
+  pantalla->setEscenario(&eMenu);
+  SDL_Event evento;
+
+  SDL_PumpEvents();
+  while (SDL_PollEvent(&evento)) {
+  }
+
+  while (continuar) {
+    switch (mn->trap()) {
+      case 0:{
+        std::cout << "[RUNNER] Entrando a creación de save." << '\n';
+        crearSave();
+        pantalla->setEscenario(&eMenu);
+        break;
+      }
+      case 1:{
+        string sSave = "SOUL";
+        iniciarPartida(sSave, 1);
+        break;
+      }
+      case 2:{
+        bool salirControles = false;
+        std::cout << "[RUNNER] Entrando a controles." << '\n';
+        Escenario eControles;
+        eControles.setFondo(Imagen("./assets/screens/controles.png"));
+        pantalla->setEscenario(&eControles);
+
+        SDL_PumpEvents();
+        while (SDL_PollEvent(&evento)) {
+        }
+        //SDL_FlushEvent(SDL_KEYDOWN);
+
+        while (!salirControles) {
+          while (SDL_PollEvent(&evento)) {
+            if (evento.type = SDL_KEYDOWN) {
+              switch (evento.key.keysym.sym) {
+                case SDLK_z:{
+                  salirControles = true;
+                  break;
+                }
+              }
+            }
+          }
+
+          if (!salirControles) {
+            this_thread::sleep_for(chrono::milliseconds(100));
+          }else{
+            pantalla->setEscenario(&eMenu);
+
+          }
+        }
+        break;
+      }
+      case 3:{
+        std::cout << "[RUNNER] Saliendo del menú principal." << '\n';
+        continuar = false;
+        break;
+      }
+    }
+
+    SDL_PumpEvents();
+    while (SDL_PollEvent(&evento)) {
+    }
+
+    if (continuar) {
+      SDL_WaitEvent(&evento);
+    }
+  }
+
+  std::cout << "[RUNNER] Cerrando todo y saliendo..." << '\n';
+  vivo = false;
+  this_thread::sleep_for(chrono::milliseconds(1000));
+
+  TTF_Quit();
+  Mix_CloseAudio();
+  SDL_Quit();
+
+  return 0;
+}
+
+Menu * Runner::cargarMenu(string nombre) {
   fstream archivo;
   Menu* m = new Menu();
 
@@ -265,7 +306,7 @@ Menu* Runner::cargarMenu(string nombre){
   return m;
 }
 
-vector<Ataque> Runner::cargarAtaques(string nombre){
+vector<Ataque> Runner::cargarAtaques(string nombre) {
   fstream archivo;
   vector<Ataque> ataquesCargados;
 
@@ -343,7 +384,7 @@ vector<Ataque> Runner::cargarAtaques(string nombre){
     getline(archivo, buffer);
     h = stoi(buffer);
 
-    Ataque a(cantidadProyectiles, posiciones, velocidades, aleatorio, sprite, vida, sleep1, sleep2, sleep3, duracion, w, h);
+    Ataque a(cantidadProyectiles, posiciones, velocidades, aleatorio, sprite, vida, duracion, sleep1, sleep2, sleep3, w, h);
     ataquesCargados.push_back(a);
   }
 
@@ -351,7 +392,7 @@ vector<Ataque> Runner::cargarAtaques(string nombre){
   return ataquesCargados;
 }
 
-vector<string> Runner::cargarDialogo(string nombre){
+vector<string> Runner::cargarDialogo(string nombre) {
   std::cout << nombre << '\n';
   ifstream archivo2;
 
@@ -388,7 +429,7 @@ vector<string> Runner::cargarDialogo(string nombre){
   return nDialogo;
 }
 
-Enemigo* Runner::cargarEnemigo(string nombre){
+Enemigo * Runner::cargarEnemigo(string nombre) {
   fstream archivo;
 
   string ruta = "./scripts/enemigos/";
@@ -448,7 +489,7 @@ Enemigo* Runner::cargarEnemigo(string nombre){
   return e;
 }
 
-void Runner::crearSave(){
+void Runner::crearSave() {
   SDL_Event evento;
   string nuevoNombre = "";
   Escenario escenario;
@@ -603,7 +644,7 @@ void Runner::crearSave(){
   iniciarPartida(nuevoNombre, 0);
 }
 
-void Runner::guardarSave(string nNombre, int nivel){
+void Runner::guardarSave(string nNombre, int nivel) {
   fstream archivo;
   string ruta = "./saves/";
   ruta += nNombre;
@@ -616,16 +657,30 @@ void Runner::guardarSave(string nNombre, int nivel){
     exit(1);
   }
 
+  nombreJugadorSave = &nNombre;
+
   archivo << nivel;
   archivo.close();
 }
 
-void Runner::iniciarPartida(string nombreJugador, int nivel){
+void Runner::iniciarPartida(string nombreJugador, int nivel) {
+  if (nombreJugadorSave != NULL) {
+    nombreJugador = *nombreJugadorSave;
+  }
+
   Mix_HaltMusic();
 
   Sonido sonidoUI("./assets/sonidos/ui.wav");
   Sonido suspenso("./assets/sonidos/suspenso.wav");
   Sonido jump("./assets/sonidos/jump.wav");
+  Sonido sonidoMalvado("./assets/sonidos/malvado.wav");
+  Sonido ropa("./assets/sonidos/ropa.wav");
+  Sonido flee("./assets/sonidos/flee.wav");
+  Sonido bossName("./assets/sonidos/bossName.wav");
+  Sonido hit("./assets/sonidos/hit.wav");
+  Sonido sonidoAtaque("./assets/sonidos/ataque.wav");
+
+  Musica musicaBoss1("./assets/musica/boss3.wav");
 
   SDL_Event evento;
   Escenario escenario;
@@ -633,6 +688,8 @@ void Runner::iniciarPartida(string nombreJugador, int nivel){
   HUD* hud = new HUD();
   escenario.setHUD(hud);
   pantalla->setEscenario(&escenario);
+
+  std::cout << "[RUNNER] Iniciando partida..." << '\n';
 
   switch (nivel) {
     case 0:{
@@ -659,7 +716,6 @@ void Runner::iniciarPartida(string nombreJugador, int nivel){
 
       Musica musicaTutorial("./assets/musica/tutorial.wav");
 
-      Sonido ropa("./assets/sonidos/ropa.wav");
       Enemigo* guiaJaguar = cargarEnemigo("tutorial");
       tablero->setVisible(false);
 
@@ -669,7 +725,7 @@ void Runner::iniciarPartida(string nombreJugador, int nivel){
       jump.reproducir();
 
       textoRaw->setTexto(string("???: Hola!"));
-      texto->reconstruir(textoRaw, 25, &sonidoUI, 75);
+      texto->reconstruir(textoRaw, 25, &sonidoUI, 50);
       tablero->setVisible(true);
       this_thread::sleep_for(chrono::milliseconds(750));
 
@@ -677,15 +733,15 @@ void Runner::iniciarPartida(string nombreJugador, int nivel){
       texto->trap();
 
       textoRaw->setTexto(string("???: Soy JOSUE, el GUIA JAGUAR!"));
-      texto->reconstruir(textoRaw, 25, &sonidoUI, 75);
+      texto->reconstruir(textoRaw, 25, &sonidoUI, 50);
       texto->trap();
 
       textoRaw->setTexto(string("- Parece que te quedaste dormido en esa banca...  Dejame adivinar, Progra 2?"));
-      texto->reconstruir(textoRaw, 25, &sonidoUI, 75);
+      texto->reconstruir(textoRaw, 25, &sonidoUI, 50);
       texto->trap();
 
       textoRaw->setTexto(string("- Si, lo se, la ultima semana es bastante dura    El proyecto del INGENIERO OSMAN no es nada facil"));
-      texto->reconstruir(textoRaw, 25, &sonidoUI, 75);
+      texto->reconstruir(textoRaw, 25, &sonidoUI, 50);
       texto->trap();
 
       textoRaw->setTexto(string("- Como lo se? Yo tambien estudio SISTEMAS!"));
@@ -693,15 +749,15 @@ void Runner::iniciarPartida(string nombreJugador, int nivel){
       texto->trap();
 
       textoRaw->setTexto(string("- Tu eres " + nombreJugador + " no?"));
-      texto->reconstruir(textoRaw, 25, &sonidoUI, 75);
+      texto->reconstruir(textoRaw, 25, &sonidoUI, 50);
       texto->trap();
 
       textoRaw->setTexto(string("- Es todo un placer conocerte!"));
-      texto->reconstruir(textoRaw, 25, &sonidoUI, 75);
+      texto->reconstruir(textoRaw, 25, &sonidoUI, 50);
       texto->trap();
 
       textoRaw->setTexto(string("- Me caes bien. Ven, te dare algunos tips para    que domines ese proyecto!"));
-      texto->reconstruir(textoRaw, 25, &sonidoUI, 75);
+      texto->reconstruir(textoRaw, 25, &sonidoUI, 50);
       texto->trap();
       this_thread::sleep_for(chrono::milliseconds(500));
 
@@ -714,7 +770,8 @@ void Runner::iniciarPartida(string nombreJugador, int nivel){
 
       Tablero* tablero2 = new Tablero();
       Ataque atk = guiaJaguar->getAtaques()[0];
-      tablero2->modoAtaque(NULL);
+      Ataque* ataque = &atk;
+      tablero2->modoAtaque(ataque);
       Soul* soul = new Soul();
       tablero2->setSoul(soul);
       SDL_Rect bounds;
@@ -728,8 +785,8 @@ void Runner::iniciarPartida(string nombreJugador, int nivel){
       soul->setBounds(bounds);
       soul->centrar();
 
-      textoRaw->setTexto(string("Este corazon representa tu FUERZA DE VOLUNTAD     Es todo aquello que te impulsa a seguir adelante."));
-      texto->reconstruir(textoRaw, 25, &sonidoUI, 75);
+      textoRaw->setTexto(string("Este corazon representa a tu FUERZA DE VOLUNTAD   Es todo aquello que te impulsa a seguir adelante."));
+      texto->reconstruir(textoRaw, 25, &sonidoUI, 50);
       tablero->setVisible(true);
       tablero2->setVisible(true);
       Imagen black("./assets/screens/black.png");
@@ -751,8 +808,8 @@ void Runner::iniciarPartida(string nombreJugador, int nivel){
       this_thread::sleep_for(chrono::milliseconds(3000));
 
       texto->setVisible(false);
-      textoRaw->setTexto(string("- Mientras mas grande sea tu FUERZA DE VOLUNTAD   mas facil te sera vencer tus obstaculos!"));
-      texto->reconstruir(textoRaw, 25, &sonidoUI, 75);
+      textoRaw->setTexto(string("- Vamos, muevete un poco! Has de estar entumecido por dormir ahi."));
+      texto->reconstruir(textoRaw, 25, &sonidoUI, 50);
       texto->setVisible(true);
       texto->iniciar();
       while (texto->isActivo()) {
@@ -761,8 +818,18 @@ void Runner::iniciarPartida(string nombreJugador, int nivel){
       this_thread::sleep_for(chrono::milliseconds(3000));
 
       texto->setVisible(false);
-      textoRaw->setTexto(string("- Como haces a tu FUERZA DE VOLUNTAD mas grande?  Con esferas de poder, por supuesto!"));
-      texto->reconstruir(textoRaw, 25, &sonidoUI, 75);
+      textoRaw->setTexto(string("- Mientras mas grande sea tu FUERZA DE VOLUNTAD   mas facil te sera vencer tus obstaculos!"));
+      texto->reconstruir(textoRaw, 25, &sonidoUI, 50);
+      texto->setVisible(true);
+      texto->iniciar();
+      while (texto->isActivo()) {
+        this_thread::sleep_for(chrono::milliseconds(100));
+      }
+      this_thread::sleep_for(chrono::milliseconds(3000));
+
+      texto->setVisible(false);
+      textoRaw->setTexto(string("- Como haces a tu FUERZA DE VOLUNTAD mas grande?  Con esferas de amistad, por supuesto!"));
+      texto->reconstruir(textoRaw, 25, &sonidoUI, 50);
       texto->setVisible(true);
       texto->iniciar();
       while (texto->isActivo()) {
@@ -772,6 +839,94 @@ void Runner::iniciarPartida(string nombreJugador, int nivel){
 
       texto->setVisible(false);
       textoRaw->setTexto(string("- Ten, tengo unas para ti. Agarra todas las que   puedas!"));
+      texto->reconstruir(textoRaw, 25, &sonidoUI, 50);
+      texto->setVisible(true);
+      texto->iniciar();
+
+      while (texto->isActivo()) {
+        this_thread::sleep_for(chrono::milliseconds(100));
+      }
+      this_thread::sleep_for(chrono::milliseconds(1000));
+
+      thread tTablero (&Tablero::activar, tablero2, ataque, guiaJaguar->getAtaque());
+      tTablero.detach();
+      //tablero2->activar(ataque, guiaJaguar->getAtaque());
+
+      while (soul->getHP() == 600) {
+        this_thread::sleep_for(chrono::milliseconds(100));
+      }
+
+      ataque->interrumpir();
+      Mix_HaltMusic();
+      Mix_HaltChannel(-1);
+      this_thread::sleep_for(chrono::milliseconds(5000));
+
+      escenario.setFondo(Imagen("./assets/screens/batallaTutorial2.png"));
+
+      texto->setVisible(false);
+      textoRaw->setTexto(string("- Ha ha ha"));
+      texto->reconstruir(textoRaw, 25, &sonidoMalvado, 150);
+      texto->setVisible(true);
+      texto->iniciar();
+      while (texto->isActivo()) {
+        this_thread::sleep_for(chrono::milliseconds(100));
+      }
+      this_thread::sleep_for(chrono::milliseconds(3000));
+
+      texto->setVisible(false);
+      textoRaw->setTexto(string("- De verdad que eres muy iluso."));
+      texto->reconstruir(textoRaw, 25, &sonidoMalvado, 100);
+      texto->setVisible(true);
+      texto->iniciar();
+      while (texto->isActivo()) {
+        this_thread::sleep_for(chrono::milliseconds(100));
+      }
+      this_thread::sleep_for(chrono::milliseconds(3000));
+
+      texto->setVisible(false);
+      textoRaw->setTexto(string("- En este mundo NADIE te va a ayudar.             Estas completamente SOLO."));
+      texto->reconstruir(textoRaw, 25, &sonidoMalvado, 50);
+      texto->setVisible(true);
+      texto->iniciar();
+      while (texto->isActivo()) {
+        this_thread::sleep_for(chrono::milliseconds(100));
+      }
+      this_thread::sleep_for(chrono::milliseconds(3000));
+
+      texto->setVisible(false);
+      textoRaw->setTexto(string("- Otro estudiante de SISTEMAS, otro nino tonto    que piensa que puede llegar a ser alguien."));
+      texto->reconstruir(textoRaw, 25, &sonidoMalvado, 50);
+      texto->setVisible(true);
+      texto->iniciar();
+      while (texto->isActivo()) {
+        this_thread::sleep_for(chrono::milliseconds(100));
+      }
+      this_thread::sleep_for(chrono::milliseconds(3000));
+
+      texto->setVisible(false);
+      textoRaw->setTexto(string("- Pero sabes que veo yo?"));
+      texto->reconstruir(textoRaw, 25, &sonidoMalvado, 50);
+      texto->setVisible(true);
+      texto->iniciar();
+      while (texto->isActivo()) {
+        this_thread::sleep_for(chrono::milliseconds(100));
+      }
+      this_thread::sleep_for(chrono::milliseconds(3000));
+
+      texto->setVisible(false);
+      textoRaw->setTexto(string("- COMPETENCIA."));
+      texto->reconstruir(textoRaw, 25, &sonidoMalvado, 150);
+      texto->setVisible(true);
+      texto->iniciar();
+      while (texto->isActivo()) {
+        this_thread::sleep_for(chrono::milliseconds(100));
+      }
+      this_thread::sleep_for(chrono::milliseconds(3000));
+
+
+      escenario.setFondo(Imagen("./assets/screens/batallaTutorial3.png"));
+      texto->setVisible(false);
+      textoRaw->setTexto(string("???: Oigan, que esta pasando ahi?"));
       texto->reconstruir(textoRaw, 25, &sonidoUI, 75);
       texto->setVisible(true);
       texto->iniciar();
@@ -780,16 +935,286 @@ void Runner::iniciarPartida(string nombreJugador, int nivel){
       }
       this_thread::sleep_for(chrono::milliseconds(3000));
 
-      //guiaJaguar->centrar();
-      //hud->addElemento(guiaJaguar);
+
+      texto->setVisible(false);
+      textoRaw->setTexto(string("- Nos vemos!"));
+      texto->reconstruir(textoRaw, 25, &sonidoMalvado, 50);
+      texto->setVisible(true);
+      texto->iniciar();
+      while (texto->isActivo()) {
+        this_thread::sleep_for(chrono::milliseconds(100));
+      }
+      this_thread::sleep_for(chrono::milliseconds(3000));
+
+      escenario.setFondo(Imagen("./assets/screens/black.png"));
+      texto->setVisible(false);
+      tablero2->setVisible(false);
+      flee.reproducir();
+      textoRaw->setTexto(string("* Josue salio corriendo..."));
+      texto->reconstruir(textoRaw, 25, &sonidoUI, 50);
+      texto->setVisible(true);
+      texto->iniciar();
+      while (texto->isActivo()) {
+        this_thread::sleep_for(chrono::milliseconds(100));
+      }
+      this_thread::sleep_for(chrono::milliseconds(3000));
+
+      escenario.setFondo(Imagen("./assets/screens/black.png"));
+      jump.reproducir();
+      tablero->setVisible(false);
+      this_thread::sleep_for(chrono::milliseconds(3000));
+      escenario.setFondo(Imagen("./assets/screens/guardando.png"));
+      this_thread::sleep_for(chrono::milliseconds(3000));
+      escenario.setFondo(Imagen("./assets/screens/black.png"));
+      this_thread::sleep_for(chrono::milliseconds(100));
+      pantalla->setEscenario(NULL);
+
+      //iniciarPartida(nombreJugador, 1);
+      break;
+    }
+    case 1:{
+      Imagen screen1 = Imagen("./assets/screens/batallaBoss1.png");
+      Imagen screen2 = Imagen("./assets/screens/batallaBoss12.png");
+      Imagen screen3 = Imagen("./assets/screens/batallaBoss13.png");
+
+      int atkJugador = 25;
+      Soul* soul = new Soul();
+      Enemigo* boss1 = cargarEnemigo("boss1");
+      Menu* menuBatalla = cargarMenu("batalla");
+      Texto* barraJugador = new Texto(" ");
+      Texto* barraEnemigo = new Texto(" ");
+
+      barraEnemigo->setAnchura(10);
+      barraEnemigo->setPosicionX(60);
+      barraEnemigo->setPosicionY(40);
+      barraEnemigo->setVisible(false);
 
 
+      //barraJugador->setAnchura(50);
+      barraJugador->setPosicionX(240);
+      barraJugador->setPosicionY(400);
+      barraJugador->setVisible(false);
+
+      menuBatalla->setPosicionY(430);
+      menuBatalla->setPosicionX(15);
+      menuBatalla->setPosicionX(50);
+      menuBatalla->setVisible(false);
+
+      std::cout << "[RUNNER] Entrando a nivel 1." << '\n';
+      this_thread::sleep_for(chrono::milliseconds(2000));
+      Tablero* tablero = new Tablero();
+      tablero->setVisible(false);
+      tablero->setPosicionY(280);
+      tablero->setSoul(soul);
+
+      Texto* textoRaw = new Texto(string("* Una semana despues..."));
+      TextManager* texto = new TextManager(textoRaw, 25, &sonidoUI, 75);
+      texto->setPosicionX(20);
+      texto->setPosicionY(440);
+      hud->addElemento(texto);
+      texto->trap();
+      this_thread::sleep_for(chrono::milliseconds(1000));
+      texto->setVisible(false);
+
+      texto = new TextManager(textoRaw, 25, &sonidoUI, 75);
+      textoRaw->setTexto(string("???: Espero que este listo senor " + nombreJugador + "."));
+      texto->reconstruir(textoRaw, 25, &sonidoUI, 75);
+      hud->addElemento(tablero);
+      tablero->addElemento(texto);
+      tablero->setVisible(true);
+      texto->trap();
+      this_thread::sleep_for(chrono::milliseconds(1000));
+
+      jump.reproducir();
+      escenario.setFondo(Imagen("./assets/screens/batallaBoss1.png"));
+      textoRaw->setTexto(string("- Muestreme de que esta hecho."));
+      texto->reconstruir(textoRaw, 25, &sonidoUI, 75);
+      texto->trap();
+      this_thread::sleep_for(chrono::milliseconds(1000));
+
+      tablero->setVisible(false);
+
+      Texto textoRaw2 = Texto(string("ING. OSMAN MEJIA"));
+      textoRaw2.setSize(50);
+      DesplazadorTexto* texto2 = new DesplazadorTexto(textoRaw2, &bossName, 250);
+      texto2->setPosicionX(70);
+      texto2->setPosicionY(325);
+      hud->addElemento(texto2);
+      texto2->iniciar();
+      texto2->setVisible(true);
+      this_thread::sleep_for(chrono::milliseconds(9000));
+      texto2->setVisible(false);
+      musicaBoss1.reproducir();
+
+      tablero->setVisible(true);
+      hud->addElemento(menuBatalla);
+      textoRaw->setTexto(string("* El ING. OSMAN te observa fijamente."));
+      texto->reconstruir(textoRaw, 25, &sonidoUI, 25);
+      texto->iniciar();
+
+      Texto* textoRawSec = new Texto(string("123"));
+      TextManager* textoSecundario = new TextManager(textoRaw, 25, &sonidoUI, 75);
+      tablero->addElemento(textoSecundario);
+      textoSecundario->setVisible(false);
+
+      menuBatalla->setVisible(true);
+      SDL_PumpEvents();
+      while (SDL_PollEvent(&evento)) {}
+      SDL_Event evento;
+      bool continuar = true;
+      Ataque atk = boss1->getAtaques()[0];
+      Ataque* ataque = &atk;
+
+      SDL_Rect bounds;
+
+      bounds.w = 200;
+      bounds.h = 200;
+      soul->setBounds(bounds);
+      soul->centrar();
+      soul->setVisible(true);
+
+      hud->addElemento(barraEnemigo);
+      hud->addElemento(barraJugador);
+
+      while (continuar) {
+        if (boss1->getHP() <= 0) {
+          cout << "[RUNNER] Boss vencido." << endl;
+          gameWon();
+          continuar = false;
+          break;
+        }
+
+        int atkNormal = boss1->getAtaque();
+        texto->setVisible(true);
+        texto->reconstruir(textoRaw, 25, &sonidoUI, 25);
+        texto->iniciar();
+
+        SDL_PumpEvents();
+        while (SDL_PollEvent(&evento)) {}
+
+        switch (menuBatalla->trap()) {
+          case 2:{
+            textoSecundario->trap();
+            texto->setVisible(false);
+            textoRawSec->setTexto(string("ING OSMAN MEJIA - 25 ATK / 5 DEF                 No puedes ni verlo a la cara por los nervios."));
+            textoSecundario->setVisible(true);
+            textoSecundario->reconstruir(textoRawSec, 25, &sonidoUI, 75);
+            textoSecundario->setVisible(false);
+            break;
+          }
+          case 1:{
+            texto->setVisible(false);
+            textoRawSec->setTexto(string("* Te defenderas durante el siguiente turno        Dano recibido reducido."));
+            textoSecundario->setVisible(true);
+            textoSecundario->reconstruir(textoRawSec, 25, &sonidoUI, 75);
+            textoSecundario->trap();
+            boss1->setAtaque(atkNormal*.5);
+            textoSecundario->setVisible(false);
+            break;
+          }
+          case 0:{
+            this_thread::sleep_for(chrono::milliseconds(500));
+            sonidoAtaque.reproducir();
+            this_thread::sleep_for(chrono::milliseconds(500));
+            hit.reproducir();
+
+            for (size_t i = 0; i < 6; i++) {
+              escenario.setFondo(screen2);
+              this_thread::sleep_for(chrono::milliseconds(75));
+              escenario.setFondo(screen3);
+              this_thread::sleep_for(chrono::milliseconds(75));
+            }
+
+            escenario.setFondo(screen1);
+
+
+            boss1->setHP(boss1->getHP() - atkJugador);
+            atkJugador += 20;
+
+            barraEnemigo->setTexto(string("HP: " + to_string(boss1->getHP()) + "/250"));
+            barraEnemigo->setVisible(true);
+            this_thread::sleep_for(chrono::milliseconds(2000));
+            barraEnemigo->setVisible(false);
+
+            break;
+          }
+        }
+
+        if (boss1->getHP() <= 0) {
+          cout << "[RUNNER] Boss vencido." << endl;
+          gameWon();
+          continuar = false;
+          break;
+        }
+
+
+        menuBatalla->setVisible(false);
+
+        tablero->modoAtaque(ataque);
+        while (tablero->isListo() == false) {
+          this_thread::sleep_for(chrono::milliseconds(100));
+        }
+
+        thread tTablero (&Tablero::activar, tablero, ataque, boss1->getAtaque());
+        tTablero.detach();
+        soul->trap();
+
+        while (ataque->activo) {
+          this_thread::sleep_for(chrono::milliseconds(100));
+        }
+
+        barraJugador->setTexto(string(nombreJugador + ": " + to_string(soul->getHP()) + "/600"));
+        barraJugador->setVisible(true);
+
+        if (soul->getHP() <= 0) {
+          cout << "[RUNNER] Jugador vencido." << endl;
+          gameOver();
+          continuar = false;
+          break;
+        }
+
+        tablero->modoDisplay();
+        menuBatalla->setVisible(true);
+
+
+        if (continuar) {
+          SDL_WaitEvent(&evento);
+        }
+      }
+
+      //run();
+      this_thread::sleep_for(chrono::milliseconds(1000));
+      pantalla->setEscenario(NULL);
       break;
     }
   }
 
 
 
+}
+
+void Runner::gameOver() {
+  this_thread::sleep_for(chrono::milliseconds(1000));
+  Escenario escenario;
+  escenario.setFondo(Imagen("./assets/screens/gameOver.png"));
+
+  pantalla->setEscenario(&escenario);
+  Musica gameOv("./assets/musica/gameOver.wav");
+  gameOv.reproducir();
+  this_thread::sleep_for(chrono::milliseconds(7000));
+  run();
+}
+
+void Runner::gameWon() {
+  this_thread::sleep_for(chrono::milliseconds(1000));
+  Escenario escenario;
+  escenario.setFondo(Imagen("./assets/screens/gameWon.png"));
+
+  pantalla->setEscenario(&escenario);
+  Musica gameOv("./assets/musica/gameWon.wav");
+  gameOv.reproducir();
+  this_thread::sleep_for(chrono::milliseconds(7000));
+  run();
 }
 
 Runner::~Runner(){

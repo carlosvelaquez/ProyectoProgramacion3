@@ -1,5 +1,7 @@
+
 #include "Audio.h"
 
-bool Audio::isCargado(){
+bool Audio::isCargado() {
   return cargado;
 }
+

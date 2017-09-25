@@ -6,39 +6,45 @@
 
 using namespace std;
 
-class Proyectil : public ElementoGUI{
-private:
-  Sprite sprite;
-  //int anchura;
-  //int altura;
-  int velocidadX;
-  int velocidadY;
-  //int posicionX;
-  //int posicionY;
-  long vida;
-  bool activo = false;
+class Proyectil : public ElementoGUI {
+  private:
+    Sprite sprite;
+    //int anchura;
+    //int altura;
 
-public:
-  Proyectil(Sprite, int, int, int, int, long);
-  Proyectil(Sprite, int, int);
+    int velocidadX;
+    int velocidadY;
 
-  Sprite getSprite();
-  //int getAnchura();
-  //int getAltura();
-  int getVelocidadX();
-  int getVelocidadY();
-  //int getPosicionX();
-  //int getPosicionY();
+    //int posicionX;
+    //int posicionY;
 
-  void setSprite(Sprite);
-  void setVelocidadX(int);
-  void setVelocidadY(int);
-  //void setPosicionX(int);
-  //void setPosicionY(int);
+    long vida;
+    bool activo = false;
 
-  void activar();
-  void ejecutar();
 
-  SDL_Surface* toSuperficie();
-  bool refrescar();
+  public:
+    Proyectil(Sprite nSprite, int posX, int posY, int velX, int velY, long vid);
+    Proyectil(Sprite nSprite, int posX, int posY);
+
+    Sprite getSprite();
+
+    //int getAnchura();
+    //int getAltura();
+    int getVelocidadX();
+    int getVelocidadY();
+
+    //int getPosicionX();
+    //int getPosicionY();
+    void setSprite(Sprite nSprite);
+    void setVelocidadX(int velX);
+    void setVelocidadY(int velY);
+
+    //void setPosicionX(int);
+    //void setPosicionY(int);
+    void activar();
+    void ejecutar();
+
+    SDL_Surface* toSuperficie();
+    bool refrescar();
+
 };

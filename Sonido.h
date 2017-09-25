@@ -1,16 +1,24 @@
 #pragma once
+
 #include "Audio.h"
+#include <string>
+using namespace std;
 
-class Sonido : public Audio{
-private:
-  Mix_Chunk* sonido;
+class Sonido : public Audio {
+  private:
+    Mix_Chunk * sonido;
 
-public:
-  Sonido();
-  Sonido(string);
+  public:
+    Sonido();
+    Sonido(string nRuta);
 
-  bool reproducir();
-  bool cargar();
+    bool reproducir();
+    bool cargar();
+    bool parar();
+    bool verificar();
 
-  ~Sonido();
+    string identificar();
+    void liberar();
+
+    ~Sonido();
 };

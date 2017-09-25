@@ -1,19 +1,22 @@
 #pragma once
 #include "Audio.h"
 
-class Musica : public Audio{
-private:
-  Mix_Music* musica;
+class Musica : public Audio {
+  private:
+    Mix_Music * musica;
 
-public:
-  Musica(string);
+  public:
+    Musica(string nRuta);
 
-  bool pausar();
-  bool resumir();
-  void parar();
+    bool pausar();
+    bool resumir();
+    bool parar();
+    bool reproducir();
+    bool cargar();
+    bool verificar();
 
-  bool reproducir();
-  bool cargar();
+    string identificar();
+    void liberar();
 
-  ~Musica();
+    ~Musica();
 };

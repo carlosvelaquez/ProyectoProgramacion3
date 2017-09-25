@@ -1,3 +1,4 @@
+
 #include "Soul.h"
 
 Soul::Soul(){
@@ -8,33 +9,48 @@ Soul::Soul(){
   sprite = Sprite("./assets/soul.png");
   altura = 16;
   anchura = 16;
+  hp = 600;
 }
 
-Sprite Soul::getSprite(){
+Sprite Soul::getSprite() {
   return sprite;
 }
 
-int Soul::getVelocidad(){
+int Soul::getVelocidad() {
   return velocidad;
 }
 
-int Soul::getVelocidadBlink(){
+int Soul::getVelocidadBlink() {
   return velocidadBlink;
 }
 
-long Soul::getDuracionBlink(){
+long Soul::getDuracionBlink() {
   return duracionBlink;
 }
 
-void Soul::setSprite(Sprite nSprite){
+int Soul::getHP() {
+  return hp;
+}
+
+void Soul::setSprite(Sprite nSprite) {
   sprite = nSprite;
 }
 
-void Soul::setVelocidad(int nVelocidad){
+void Soul::setVelocidad(int nVelocidad) {
   velocidad = nVelocidad;
 }
 
-void Soul::trap(){
+void Soul::setVelocidadBlink(int ) {
+}
+
+void Soul::setDuracionBlink(long ) {
+}
+
+void Soul::setHP(int nHP) {
+  hp = nHP;
+}
+
+void Soul::trap() {
   SDL_Event ev;
   salirTrap = false;
   visible = true;
@@ -104,12 +120,12 @@ void Soul::trap(){
   visible = false;
 }
 
-void Soul::blink(){
+void Soul::blink() {
   thread blinker (&Soul::comenzarBlink, this);
   blinker.detach();
 }
 
-void Soul::comenzarBlink(){
+void Soul::comenzarBlink() {
   visible = false;
 
   for (size_t i = 0; i < duracionBlink; i++) {
@@ -126,7 +142,7 @@ void Soul::comenzarBlink(){
   visible = true;
 }
 
-void Soul::mover(int direccion){
+void Soul::mover(int direccion) {
   switch (direccion) {
     case 1:{
       if (posicionY - velocidad > 0) {
@@ -155,24 +171,24 @@ void Soul::mover(int direccion){
   }
 }
 
-void Soul::terminarTrap(){
+void Soul::terminarTrap() {
   salirTrap = true;
 }
 
-SDL_Rect Soul::getBounds(){
+void Soul::centrar() {
+  posicionX = (bounds.w/2) - anchura;
+  posicionY = (bounds.h/2) - altura;
+}
+
+SDL_Rect Soul::getBounds() {
   return bounds;
 }
 
-void Soul::setBounds(SDL_Rect nBounds){
+void Soul::setBounds(SDL_Rect nBounds) {
   bounds = nBounds;
 }
 
-void Soul::centrar(){
-  posicionX = bounds.w/2;
-  posicionY = bounds.h/2;
-}
-
-SDL_Surface* Soul::toSuperficie(){
+SDL_Surface * Soul::toSuperficie() {
   if (visible) {
     return sprite.toSuperficie();
   }else{
@@ -180,7 +196,8 @@ SDL_Surface* Soul::toSuperficie(){
   }
 }
 
-bool Soul::refrescar(){
+bool Soul::refrescar() {
   std::cout << "[SOUL] Refrescando..." << '\n';
   return true;
 }
+

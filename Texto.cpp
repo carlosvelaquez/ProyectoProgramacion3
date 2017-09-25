@@ -1,3 +1,4 @@
+
 #include "Texto.h"
 
 Texto::Texto(){
@@ -66,31 +67,31 @@ Texto::Texto(string nTexto, int nSize, int nWrap, SDL_Color nColor, string nRuta
   recargarFont();
 }
 
-string Texto::getTexto(){
+string Texto::getTexto() {
   return texto;
 }
 
-int Texto::getSize(){
+int Texto::getSize() {
   return size;
 }
 
-int Texto::getLength(){
+int Texto::getLength() {
   return length;
 }
 
-int Texto::getWrap(){
+int Texto::getWrap() {
   return wrap;
 }
 
-SDL_Color Texto::getColor(){
+SDL_Color Texto::getColor() {
   return color;
 }
 
-TTF_Font* Texto::getFont(){
+TTF_Font * Texto::getFont() {
   return font;
 }
 
-SDL_Surface* Texto::toSuperficie(){
+SDL_Surface * Texto::toSuperficie() {
   recargarFont();
   refrescar();
 
@@ -99,39 +100,39 @@ SDL_Surface* Texto::toSuperficie(){
   return superficie;
 }
 
-void Texto::setTexto(string nTexto){
+void Texto::setTexto(string nTexto) {
   texto = nTexto;
 }
 
-void Texto::setSize(int nSize){
+void Texto::setSize(int nSize) {
   size = nSize;
   refrescar();
 }
 
-void Texto::setWrap(int nWrap){
+void Texto::setWrap(int nWrap) {
   wrap = nWrap;
   refrescar();
 }
 
-void Texto::setColor(SDL_Color nColor){
+void Texto::setColor(SDL_Color nColor) {
   color = nColor;
   refrescar();
 }
 
-void Texto::cargarFont(string nRutaFont){
+void Texto::cargarFont(string nRutaFont) {
   rutaFont = nRutaFont;
   recargarFont();
   refrescar();
 }
 
-bool Texto::refrescar(){
+bool Texto::refrescar() {
   length = texto.length();
   altura = size;
   anchura = (size*.75)*length;
 
 }
 
-bool Texto::recargarFont(){
+bool Texto::recargarFont() {
   font = TTF_OpenFont(rutaFont.c_str(), size);
 
   if (font) {
@@ -151,3 +152,4 @@ Texto::~Texto(){
   }*/
   //TTF_CloseFont(font);
 }
+

@@ -1,6 +1,10 @@
+
 #include "TextManager.h"
+#include "DesplazadorTexto.h"
+#include "Texto.h"
+#include "Sonido.h"
 
-TextManager::TextManager(Texto* texto, int nMultiplicador, Sonido* sonido, long velocidad){
+TextManager::TextManager(Texto * texto, int nMultiplicador, Sonido * sonido, long velocidad){
   desplazadores.clear();
   vector<string> strings;
   strings.clear();
@@ -40,7 +44,7 @@ TextManager::TextManager(Texto* texto, int nMultiplicador, Sonido* sonido, long 
   setPosicionY(15);
 }
 
-void TextManager::reconstruir(Texto* texto, int nMultiplicador, Sonido* sonido, long velocidad){
+void TextManager::reconstruir(Texto * texto, int nMultiplicador, Sonido * sonido, long velocidad) {
   desplazadores.clear();
   vector<string> strings;
   strings.clear();
@@ -79,15 +83,19 @@ void TextManager::reconstruir(Texto* texto, int nMultiplicador, Sonido* sonido, 
   setPosicionY(15);
 }
 
-int TextManager::getMultiplicador(){
+int TextManager::getMultiplicador() {
   return multiplicador;
 }
 
-void TextManager::setMultiplicador(int nMultiplicador){
+void TextManager::setMultiplicador(int nMultiplicador) {
   multiplicador = nMultiplicador;
 }
 
-int TextManager::getPosicionX(){
+bool TextManager::isActivo() {
+  return activo;
+}
+
+int TextManager::getPosicionX() {
   if (desplazadores.size() > 0) {
     return desplazadores[0]->getPosicionX();
   }else{
@@ -95,7 +103,7 @@ int TextManager::getPosicionX(){
   }
 }
 
-int TextManager::getPosicionY(){
+int TextManager::getPosicionY() {
   if (desplazadores.size() > 0) {
     return desplazadores[0]->getPosicionY();
   }else{
@@ -103,41 +111,73 @@ int TextManager::getPosicionY(){
   }
 }
 
-bool TextManager::isActivo(){
-  return activo;
-}
-
-void TextManager::setPosicionX(int nPos){
+void TextManager::setPosicionX(int nPos) {
   if (desplazadores.size() > 0) {
     desplazadores[0]->setPosicionX(nPos);
   }
 }
 
-void TextManager::setPosicionY(int nPos){
+void TextManager::setPosicionY(int nPos) {
   if (desplazadores.size() > 0) {
     desplazadores[0]->setPosicionY(nPos);
   }
 }
 
-vector<DesplazadorTexto*> TextManager::getDesplazadores(){
+void TextManager::setVelocidad(long nVelocidad) {
+  for (int i = 0; i < desplazadores.size(); i++) {
+    desplazadores[i]->setVelocidad(nVelocidad);
+  }
+}
+
+vector<DesplazadorTexto*> TextManager::getDesplazadores() {
   return desplazadores;
 }
 
-void TextManager::setDesplazadores(vector<DesplazadorTexto*> nDesplazadores){
+void TextManager::setDesplazadores(vector<DesplazadorTexto*> nDesplazadores) {
   desplazadores = nDesplazadores;
 }
 
-void TextManager::addDesplazador(DesplazadorTexto* nDesplazador){
+void TextManager::addDesplazador(DesplazadorTexto * nDesplazador) {
   desplazadores.push_back(nDesplazador);
 }
 
-void TextManager::setVisible(bool nVisible){
+void TextManager::setVisible(bool nVisible) {
   for (int i = 0; i < desplazadores.size(); i++) {
     desplazadores[i]->setVisible(nVisible);
   }
 }
 
-void TextManager::trap(){
+void TextManager::setMute(bool nMute) {
+  for (int i = 0; i < desplazadores.size(); i++) {
+    desplazadores[i]->setMute(nMute);
+  }
+}
+
+void TextManager::iniciar() {
+  setVisible(false);
+  activo = true;
+
+  thread ejecucion (&TextManager::desplazar, this);
+  ejecucion.detach();
+}
+
+void TextManager::desplazar() {
+
+  for (int i = 0; i < desplazadores.size(); i++) {
+    desplazadores[i]->setPosicionY((i*multiplicador) + desplazadores[0]->getPosicionY());
+    desplazadores[i]->setPosicionX(desplazadores[0]->getPosicionX());
+    desplazadores[i]->setVisible(true);
+    desplazadores[i]->iniciar();
+
+    while (desplazadores[i]->isActivo()) {
+      this_thread::sleep_for(chrono::milliseconds(100));
+    }
+  }
+
+  activo = false;
+}
+
+void TextManager::trap() {
   Uint8* tecla = SDL_GetKeyState(NULL);
   bool saltar = false;
   long velocidadOld;
@@ -170,43 +210,7 @@ void TextManager::trap(){
   }
 }
 
-void TextManager::iniciar(){
-  setVisible(false);
-  activo = true;
-
-  thread ejecucion (&TextManager::desplazar, this);
-  ejecucion.detach();
-}
-
-void TextManager::desplazar(){
-
-  for (int i = 0; i < desplazadores.size(); i++) {
-    desplazadores[i]->setPosicionY((i*multiplicador) + desplazadores[0]->getPosicionY());
-    desplazadores[i]->setPosicionX(desplazadores[0]->getPosicionX());
-    desplazadores[i]->setVisible(true);
-    desplazadores[i]->iniciar();
-
-    while (desplazadores[i]->isActivo()) {
-      this_thread::sleep_for(chrono::milliseconds(100));
-    }
-  }
-
-  activo = false;
-}
-
-void TextManager::setVelocidad(long nVelocidad){
-  for (int i = 0; i < desplazadores.size(); i++) {
-    desplazadores[i]->setVelocidad(nVelocidad);
-  }
-}
-
-void TextManager::setMute(bool nMute){
-  for (int i = 0; i < desplazadores.size(); i++) {
-    desplazadores[i]->setMute(nMute);
-  }
-}
-
-SDL_Surface* TextManager::toSuperficie(){
+SDL_Surface * TextManager::toSuperficie() {
   SDL_Surface* superficie = SDL_CreateRGBSurface(SDL_HWSURFACE, 640, 480, 32, 0x000000FF, 0x0000FF00, 0x00FF0000, 0xFF000000);
 
   for (int i = 0; i < desplazadores.size(); i++) {
@@ -224,6 +228,7 @@ SDL_Surface* TextManager::toSuperficie(){
   return superficie;
 }
 
-bool TextManager::refrescar(){
+bool TextManager::refrescar() {
   return true;
 }
+

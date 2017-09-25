@@ -37,27 +37,32 @@
 
 using namespace std;
 
-class Runner{
-private:
-  int init = 1;
-  Pantalla* pantalla = NULL;
-  bool vivo;
-  vector<Menu*> menus;
+class Runner {
+  private:
+    int init = 1;
+    Pantalla* pantalla = NULL;
+    bool vivo;
+    vector<Menu*> menus;
+    string* nombreJugadorSave = NULL;
 
-public:
-  Runner();
-  void playIntro();
-  void iniciarRefresher();
+  public:
+    Runner();
 
-  int run();
-  Menu* cargarMenu(string);
-  vector<Ataque> cargarAtaques(string);
-  vector<string> cargarDialogo(string);
-  Enemigo* cargarEnemigo(string);
+    void playIntro();
+    void iniciarRefresher();
 
-  void crearSave();
-  void guardarSave(string, int);
-  void iniciarPartida(string, int);
+    int run();
+    Menu * cargarMenu(string nombre);
+    vector<Ataque> cargarAtaques(string nombre);
+    vector<string> cargarDialogo(string nombre);
+    Enemigo * cargarEnemigo(string nombre);
 
-  ~Runner();
+    void crearSave();
+    void guardarSave(string nNombre, int nivel);
+    void iniciarPartida(string nombreJugador, int nivel);
+    void gameOver();
+    void gameWon();
+
+    ~Runner();
+
 };

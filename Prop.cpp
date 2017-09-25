@@ -1,3 +1,4 @@
+
 #include "Prop.h"
 
 Prop::Prop(int nAltura, int nAnchura, int posX, int posY, Sprite nSprite, bool nSolido){
@@ -9,50 +10,51 @@ Prop::Prop(int nAltura, int nAnchura, int posX, int posY, Sprite nSprite, bool n
   solido = nSolido;
 }
 
-int Prop::getAltura(){
+int Prop::getAltura() {
   return altura;
 }
 
-int Prop::getAnchura(){
+int Prop::getAnchura() {
   return anchura;
 }
 
-int Prop::getPosicionX(){
+int Prop::getPosicionX() {
   return posicionX;
 }
 
-int Prop::getPosicionY(){
+int Prop::getPosicionY() {
   return posicionY;
 }
 
-Sprite Prop::getSprite(){
+Sprite Prop::getSprite() {
   return sprite;
 }
 
-bool Prop::isSolido(){
+bool Prop::isSolido() {
   return solido;
 }
 
-void Prop::setAltura(int nAltura){
+void Prop::setAltura(int nAltura) {
   altura = nAltura;
 }
 
-void Prop::setAnchura(int nAnchura){
+void Prop::setAnchura(int nAnchura) {
   anchura = nAnchura;
 }
 
-void Prop::setPosicionX(int posX){
+void Prop::setPosicionX(int posX) {
   posicionX = posX;
 }
 
-void Prop::setPosicionY(int posY){
+void Prop::setPosicionY(int posY) {
   posicionY = posY;
 }
 
-void Prop::setSprite(Sprite nSprite){
+void Prop::setSprite(Sprite nSprite) {
   sprite = nSprite;
 }
 
-void Prop::setSolido(bool nSolido){
+void Prop::setSolido(bool nSolido) {
   solido = nSolido;
 }
+

@@ -10,6 +10,6 @@
 255
 25
 Nuevo Juego
-Cargar Savefile
-Opciones
+Continuar Partida
+Controles
 Salir

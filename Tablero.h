@@ -5,39 +5,42 @@
 #include "Proyectil.h"
 #include "Ataque.h"
 #include "Soul.h"
+#include "Sonido.h"
 
-class Tablero : public ElementoGUI{
-private:
-  int modo;
-  vector<Proyectil>* proyectiles;
-  vector<ElementoGUI*> elementosGUI;
-  Soul* soul;
-  bool listo;
-  bool visible;
+class Tablero : public ElementoGUI {
+  private:
+    int modo;
+    vector<Proyectil*>* proyectiles;
+    vector<ElementoGUI*> elementosGUI;
 
-public:
-  Tablero();
+    Soul* soul;
+    bool listo;
+    bool visible;
+    Sonido sonidoDano;
 
-  int getModo();
-  vector<Proyectil>* getProyectiles();
-  vector<ElementoGUI*> getElementos();
-  bool isListo();
-  Soul* getSoul();
-  bool isVisible();
+  public:
+    Tablero();
+    int getModo();
 
-  void addElemento(ElementoGUI*);
-  void setProyectiles(vector<Proyectil>*);
-  void setSoul(Soul*);
-  void setVisible(bool);
+    vector<Proyectil*>* getProyectiles();
+    vector<ElementoGUI*> getElementos();
 
-  SDL_Surface* toSuperficie();
-  bool refrescar();
+    bool isListo();
+    Soul* getSoul();
+    bool isVisible();
 
-  void modoAtaque(Ataque*);
-  void modoDisplay();
-  void activar(Ataque*);
+    void addElemento(ElementoGUI* nElemento);
+    void setProyectiles(vector<Proyectil*>* nProyectiles);
+    void setSoul(Soul* nSoul);
+    void setVisible(bool nVisible);
 
-  void cambiarTamano(int, int);
+    SDL_Surface* toSuperficie();
+    bool refrescar();
 
-  ~Tablero();
+    void modoAtaque(Ataque* ataque);
+    void modoDisplay();
+    void activar(Ataque* ataque, int atk);
+    void cambiarTamano(int nAnchura, int nAltura);
+
+    ~Tablero();
 };

@@ -1,4 +1,6 @@
+
 #include "Enemigo.h"
+#include "Ataque.h"
 
 Enemigo::Enemigo(int nAtaque, int nDefensa, int nHP, string nNombre, Sprite nSprite, Sonido nSonidoDialogo, vector<Ataque> nAtaques, int nCantidadAtaques, vector<string> nDialogo, int nFlinch, int nVelocidadFlinch){
   ataque = nAtaque;
@@ -13,101 +15,106 @@ Enemigo::Enemigo(int nAtaque, int nDefensa, int nHP, string nNombre, Sprite nSpr
   velocidadFlinch = nVelocidadFlinch;
 }
 
-int Enemigo::getAtaque(){
+int Enemigo::getAtaque() {
   return ataque;
 }
 
-int Enemigo::getDefensa(){
+int Enemigo::getDefensa() {
   return defensa;
 }
 
-int Enemigo::getHP(){
+int Enemigo::getHP() {
   return hp;
 }
 
-string Enemigo::getNombre(){
+string Enemigo::getNombre() {
   return nombre;
 }
 
-Sprite Enemigo::getSprite(){
+Sprite Enemigo::getSprite() {
   return sprite;
 }
 
-Sonido Enemigo::getSonidoDialogo(){
+Sonido Enemigo::getSonidoDialogo() {
   return sonidoDialogo;
 }
 
-vector<Ataque> Enemigo::getAtaques(){
+vector<Ataque> Enemigo::getAtaques() {
   return ataques;
 }
 
-int Enemigo::getCantidadAtaques(){
+int Enemigo::getCantidadAtaques() {
   cantidadAtaques = ataques.size();
   return cantidadAtaques;
 }
 
-vector<string> Enemigo::getDialogo(){
+vector<string> Enemigo::getDialogo() {
   return dialogo;
 }
 
-int Enemigo::getFlinch(){
+int Enemigo::getFlinch() {
   return flinch;
 }
 
-int Enemigo::getVelocidadFlinch(){
+int Enemigo::getVelocidadFlinch() {
   return velocidadFlinch;
 }
 
-void Enemigo::setAtaque(int nAtaque){
+int Enemigo::getLimiteAtaques() {
+}
+
+void Enemigo::setAtaque(int nAtaque) {
   ataque = nAtaque;
 }
 
-void Enemigo::setDefensa(int nDefensa){
+void Enemigo::setDefensa(int nDefensa) {
   defensa = nDefensa;
 }
 
-void Enemigo::setHP(int nHP){
+void Enemigo::setHP(int nHP) {
   hp = nHP;
 }
 
-void Enemigo::setNombre(string nNombre){
+void Enemigo::setNombre(string nNombre) {
   nombre = nNombre;
 }
 
-void Enemigo::setSprite(Sprite nSprite){
+void Enemigo::setSprite(Sprite nSprite) {
   sprite = nSprite;
 }
 
-void Enemigo::setSonidoDialogo(Sonido nSonidoDialogo){
+void Enemigo::setSonidoDialogo(Sonido nSonidoDialogo) {
   sonidoDialogo = nSonidoDialogo;
 }
 
-void Enemigo::setAtaques(vector<Ataque> nAtaques){
+void Enemigo::setAtaques(vector<Ataque> nAtaques) {
   ataques = nAtaques;
   cantidadAtaques = ataques.size();
 }
 
-void Enemigo::setDialogo(vector<string> nDialogo){
+void Enemigo::setDialogo(vector<string> nDialogo) {
   dialogo = nDialogo;
 }
 
-void Enemigo::setFlinch(int nFlinch){
+void Enemigo::setFlinch(int nFlinch) {
     flinch = nFlinch;
 }
 
-void Enemigo::setVelocidadFlinch(int nVelocidadFlinch){
+void Enemigo::setVelocidadFlinch(int nVelocidadFlinch) {
   velocidadFlinch = nVelocidadFlinch;
 }
 
-/*SDL_Surface* Enemigo::toSuperficie(){
-  return sprite.toSuperficie();
+void Enemigo::setLimiteAtaques(int ) {
 }
 
-bool Enemigo::refrescar(){
-
-}*/
-
-
+//SDL_Surface* Enemigo::toSuperficie(){
+//return sprite.toSuperficie();
+//}
+//
+//bool Enemigo::refrescar(){
+//
+//}
 
 Enemigo::~Enemigo(){
 }
+

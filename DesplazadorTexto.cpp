@@ -1,6 +1,8 @@
-#include "DesplazadorTexto.h"
 
-DesplazadorTexto::DesplazadorTexto(Texto nTexto, Sonido* nSonido, long nVelocidad){
+#include "DesplazadorTexto.h"
+#include "Sonido.h"
+
+DesplazadorTexto::DesplazadorTexto(Texto nTexto, Sonido * nSonido, long nVelocidad){
   texto = nTexto;
   sonido = nSonido;
   velocidad = nVelocidad;
@@ -8,45 +10,57 @@ DesplazadorTexto::DesplazadorTexto(Texto nTexto, Sonido* nSonido, long nVelocida
   posicionY = 0;
 }
 
-Texto DesplazadorTexto::getTexto(){
+Texto DesplazadorTexto::getTexto() {
   return texto;
 }
 
-Sonido* DesplazadorTexto::getSonido(){
+Sonido * DesplazadorTexto::getSonido() {
   return sonido;
 }
 
-long DesplazadorTexto::getVelocidad(){
+long DesplazadorTexto::getVelocidad() {
   return velocidad;
 }
 
-bool DesplazadorTexto::isActivo(){
+bool DesplazadorTexto::isActivo() {
   return activo;
 }
 
-bool DesplazadorTexto::isMuted(){
+bool DesplazadorTexto::isVisible() {
+  return visible;
+}
+
+bool DesplazadorTexto::isMuted() {
   return mute;
 }
 
-void DesplazadorTexto::setTexto(Texto nTexto){
+void DesplazadorTexto::setTexto(Texto nTexto) {
   texto = nTexto;
 }
 
-void DesplazadorTexto::setSonido(Sonido* nSonido){
+void DesplazadorTexto::setSonido(Sonido * nSonido) {
   sonido = nSonido;
 }
 
-void DesplazadorTexto::setVelocidad(long nVelocidad){
+void DesplazadorTexto::setVelocidad(long nVelocidad) {
   velocidad = nVelocidad;
 }
 
-void DesplazadorTexto::iniciar(){
+void DesplazadorTexto::setVisible(bool nVisible) {
+  visible = nVisible;
+}
+
+void DesplazadorTexto::setMute(bool nMute) {
+  mute = nMute;
+}
+
+void DesplazadorTexto::iniciar() {
   activo = true;
   thread desplazador (&DesplazadorTexto::desplazar, this);
   desplazador.detach();
 }
 
-void DesplazadorTexto::desplazar(){
+void DesplazadorTexto::desplazar() {
   Texto tempTexto = texto;
   string textoActual;
 
@@ -71,7 +85,7 @@ void DesplazadorTexto::desplazar(){
   activo = false;
 }
 
-SDL_Surface* DesplazadorTexto::toSuperficie(){
+SDL_Surface * DesplazadorTexto::toSuperficie() {
   if (visible) {
     return texto.toSuperficie();
   }else{
@@ -79,18 +93,7 @@ SDL_Surface* DesplazadorTexto::toSuperficie(){
   }
 }
 
-bool DesplazadorTexto::refrescar(){
+bool DesplazadorTexto::refrescar() {
   texto.refrescar();
 }
 
-bool DesplazadorTexto::isVisible(){
-  return visible;
-}
-
-void DesplazadorTexto::setVisible(bool nVisible){
-  visible = nVisible;
-}
-
-void DesplazadorTexto::setMute(bool nMute){
-  mute = nMute;
-}

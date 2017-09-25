@@ -1,4 +1,6 @@
+
 #include "Pantalla.h"
+#include "Escenario.h"
 
 Pantalla::Pantalla(int nAltura, int nAnchura){
   altura = nAltura;
@@ -14,31 +16,31 @@ Pantalla::Pantalla(int nAltura, int nAnchura){
 
 }
 
-Escenario* Pantalla::getEscenario(){
+Escenario * Pantalla::getEscenario() {
   return escenario;
 }
 
-int Pantalla::getAltura(){
+int Pantalla::getAltura() {
   return altura;
 }
 
-int Pantalla::getAnchura(){
+int Pantalla::getAnchura() {
   return anchura;
 }
 
-void Pantalla::setEscenario(Escenario* nEscenario){
+void Pantalla::setEscenario(Escenario * nEscenario) {
   escenario = nEscenario;
 }
 
-void Pantalla::setAltura(int nAltura){
+void Pantalla::setAltura(int nAltura) {
   altura = nAltura;
 }
 
-void Pantalla::setAnchura(int nAnchura){
+void Pantalla::setAnchura(int nAnchura) {
   anchura = nAnchura;
 }
 
-bool Pantalla::refrescar(){
+bool Pantalla::refrescar() {
   aplicarSuperficie(escenario->getFondo().toSuperficie(), -1, -1);
 
   if (escenario != NULL){
@@ -79,12 +81,12 @@ bool Pantalla::refrescar(){
   return true;
 }
 
-bool Pantalla::limpiar(){
+bool Pantalla::limpiar() {
   superficie = NULL;
   return true;
 }
 
-void Pantalla::aplicarSuperficie(SDL_Surface* sup, int x, int y){
+void Pantalla::aplicarSuperficie(SDL_Surface * sup, int x, int y) {
   if (x == -1 && y == -1) {
     SDL_Rect offset;
     offset.x = 0;
@@ -102,7 +104,7 @@ void Pantalla::aplicarSuperficie(SDL_Surface* sup, int x, int y){
 
 }
 
-void Pantalla::fade(int tipo, long duracion){
+void Pantalla::fade(int tipo, long duracion) {
   if (duracion == 0) {
     duracion = 1;
   }
@@ -125,3 +127,4 @@ Pantalla::~Pantalla(){
 SDL_FreeSurface(superficie);
 std::cout << "[PANTALLA] Pantalla destruida." << '\n';
 }
+

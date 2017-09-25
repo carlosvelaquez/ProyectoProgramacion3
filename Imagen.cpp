@@ -1,3 +1,4 @@
+
 #include "Imagen.h"
 
 Imagen::Imagen(){
@@ -10,7 +11,16 @@ Imagen::Imagen(string nRuta){
   cargada = recargar();
 }
 
-bool Imagen::recargar(){
+string Imagen::getRuta() {
+}
+
+SDL_Surface * Imagen::getSuperficie() {
+}
+
+void Imagen::setRuta(string ) {
+}
+
+bool Imagen::recargar() {
   SDL_Surface* imagenCargada = NULL;
   imagenCargada = IMG_Load(ruta.c_str());
 
@@ -34,15 +44,15 @@ bool Imagen::recargar(){
   return true;
 }
 
-int Imagen::getAnchura(){
+int Imagen::getAnchura() {
   return anchura;
 }
 
-int Imagen::getAltura(){
+int Imagen::getAltura() {
   return altura;
 }
 
-SDL_Surface* Imagen::toSuperficie(){
+SDL_Surface * Imagen::toSuperficie() {
   return superficie;
 }
 
@@ -52,3 +62,4 @@ Imagen::~Imagen(){
     //std::cout << "[IMAGEN] Imagen cargada de " << ruta << " destruida." << '\n';
   }
 }
+

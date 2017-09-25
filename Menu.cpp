@@ -1,4 +1,7 @@
+
 #include "Menu.h"
+#include "Texto.h"
+#include "Sonido.h"
 
 Menu::Menu(){
   elementos.clear();
@@ -9,57 +12,60 @@ Menu::Menu(){
 
   colorActivo = {255, 247, 78};
   colorInactivo = {255, 255, 255};
+
+  sonidoMove = new Sonido("./assets/sonidos/menuMove.wav");
+  sonidoSelect = new Sonido("./assets/sonidos/menuSelect.wav");
 }
 
-vector<Texto> Menu::getElementos(){
+vector<Texto> Menu::getElementos() {
   return elementos;
 }
 
-bool Menu::isActivo(){
+bool Menu::isActivo() {
   return activo;
 }
 
-bool Menu::isVisible(){
+bool Menu::isVisible() {
   return visible;
 }
 
-int Menu::getIndice(){
+int Menu::getIndice() {
   return indice;
 }
 
-int Menu::getTipo(){
+int Menu::getTipo() {
   return tipo;
 }
 
-int Menu::getWrap(){
+int Menu::getWrap() {
   return wrap;
 }
 
-void Menu::setElementos(vector<Texto> nElementos){
+void Menu::setElementos(vector<Texto> nElementos) {
   elementos = nElementos;
 }
 
-void Menu::setActivo(bool nActivo){
+void Menu::setActivo(bool nActivo) {
   activo = nActivo;
 }
 
-void Menu::setVisible(bool nVisible){
+void Menu::setVisible(bool nVisible) {
   visible = nVisible;
 }
 
-void Menu::setIndice(int nIndice){
+void Menu::setIndice(int nIndice) {
   indice = nIndice;
 }
 
-void Menu::setTipo(int nTipo){
+void Menu::setTipo(int nTipo) {
   tipo = nTipo;
 }
 
-void Menu::setWrap(int nWrap){
+void Menu::setWrap(int nWrap) {
   wrap = nWrap;
 }
 
-SDL_Surface* Menu::toSuperficie(){
+SDL_Surface * Menu::toSuperficie() {
   if (visible && elementos.size() > 0) {
     SDL_Surface* superficie = SDL_CreateRGBSurface(SDL_HWSURFACE, 640, 480, 32, 0x000000FF, 0x0000FF00, 0x00FF0000, 0xFF000000);
     SDL_Rect offset;
@@ -112,12 +118,12 @@ SDL_Surface* Menu::toSuperficie(){
   }
 }
 
-bool Menu::refrescar(){
+bool Menu::refrescar() {
   std::cout << "[Menu] Refrescando..." << '\n';
   return true;
 }
 
-void Menu::indiceUp(){
+void Menu::indiceUp() {
   if (indice + 1 < elementos.size()) {
     indice++;
   }else{
@@ -125,7 +131,7 @@ void Menu::indiceUp(){
   }
 }
 
-void Menu::indiceDown(){
+void Menu::indiceDown() {
   if (indice - 1 < 0) {
     indice = elementos.size() - 1;
   }else{
@@ -133,7 +139,7 @@ void Menu::indiceDown(){
   }
 }
 
-int Menu::trap(){
+int Menu::trap() {
   if (elementos.size() > 0) {
     SDL_Event ev;
     bool salir = false;
@@ -145,30 +151,36 @@ int Menu::trap(){
           if (ev.type = SDL_KEYDOWN) {
             switch (ev.key.keysym.sym) {
               case SDLK_UP:{
+                sonidoMove->reproducir();
                 indiceDown();
                 break;
               }
               case SDLK_DOWN:{
+                sonidoMove->reproducir();
                 indiceUp();
                 break;
               }
               case SDLK_LEFT:{
+                sonidoMove->reproducir();
                 for (size_t i = 0; i < wrap; i++) {
                   indiceDown();
                 };
                 break;
               }
               case SDLK_RIGHT:{
+                sonidoMove->reproducir();
                 for (size_t i = 0; i < wrap; i++) {
                   indiceUp();
                 };
                 break;
               }
               case SDLK_x:{
+                sonidoSelect->reproducir();
                 salir = true;
                 break;
               }
               case SDLK_z:{
+                sonidoSelect->reproducir();
                 salir = true;
                 back = true;
                 break;
@@ -185,30 +197,36 @@ int Menu::trap(){
           if (ev.type = SDL_KEYDOWN) {
             switch (ev.key.keysym.sym) {
               case SDLK_RIGHT:{
+                sonidoMove->reproducir();
                 indiceUp();
                 break;
               }
               case SDLK_LEFT:{
+                sonidoMove->reproducir();
                 indiceDown();
                 break;
               }
               case SDLK_UP:{
+                sonidoMove->reproducir();
                 for (size_t i = 0; i < wrap; i++) {
                   indiceDown();
                 };
                 break;
               }
               case SDLK_DOWN:{
+                sonidoMove->reproducir();
                 for (size_t i = 0; i < wrap; i++) {
                   indiceUp();
                 };
                 break;
               }
               case SDLK_x:{
+                sonidoSelect->reproducir();
                 salir = true;
                 break;
               }
               case SDLK_z:{
+                sonidoSelect->reproducir();
                 return -1;
               }
             }
@@ -232,30 +250,31 @@ int Menu::trap(){
   }
 }
 
-void Menu::addElemento(Texto nElemento){
+void Menu::addElemento(Texto nElemento) {
   elementos.push_back(nElemento);
 }
 
-void Menu::chop(){
+void Menu::chop() {
   elementos.pop_back();
 }
 
-void Menu::clear(){
+void Menu::clear() {
   elementos.clear();
 }
 
-SDL_Color Menu::getColorActivo(){
+SDL_Color Menu::getColorActivo() {
   return colorActivo;
 }
 
-SDL_Color Menu::getColorInactivo(){
+SDL_Color Menu::getColorInactivo() {
   return colorInactivo;
 }
 
-void Menu::setColorActivo(SDL_Color nColor){
+void Menu::setColorActivo(SDL_Color nColor) {
   colorActivo = nColor;
 }
 
-void Menu::setColorInactivo(SDL_Color nColor){
+void Menu::setColorInactivo(SDL_Color nColor) {
   colorInactivo = nColor;
 }
+
