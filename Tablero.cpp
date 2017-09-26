@@ -172,7 +172,7 @@ void Tablero::activar(Ataque * ataque, int atk) {
           soul->blink();
           //sonidoDano.reproducir();
           soul->setHP(soul->getHP() - atk);
-          this_thread::sleep_for(chrono::milliseconds(250));
+          this_thread::sleep_for(chrono::milliseconds(2000));
         }
       }
     }
@@ -236,4 +236,3 @@ Tablero::~Tablero(){
     delete proyectiles;
   }
 }
-

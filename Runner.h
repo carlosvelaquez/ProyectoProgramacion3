@@ -43,7 +43,7 @@ class Runner {
     Pantalla* pantalla = NULL;
     bool vivo;
     vector<Menu*> menus;
-    string* nombreJugadorSave = NULL;
+    string nombreJugadorSave = " ";
 
   public:
     Runner();

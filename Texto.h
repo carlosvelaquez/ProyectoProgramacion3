@@ -47,10 +47,14 @@ public:
   friend istream& operator>> (istream& input, Texto t){
     string s;
     getline(input, s);
-    cout << "VAadnja" << s << '\n';
     //texto = s;
     t.setTexto(s);
     return input;
+  }
+
+  friend ostream& operator<< (ostream& output, Texto t){
+    output << t.getTexto();
+    return output;
   }
 
   ~Texto();

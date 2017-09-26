@@ -657,15 +657,15 @@ void Runner::guardarSave(string nNombre, int nivel) {
     exit(1);
   }
 
-  nombreJugadorSave = &nNombre;
+  nombreJugadorSave = nNombre;
 
   archivo << nivel;
   archivo.close();
 }
 
 void Runner::iniciarPartida(string nombreJugador, int nivel) {
-  if (nombreJugadorSave != NULL) {
-    nombreJugador = *nombreJugadorSave;
+  if (nombreJugadorSave != " ") {
+    nombreJugador = nombreJugadorSave;
   }
 
   Mix_HaltMusic();
@@ -733,31 +733,31 @@ void Runner::iniciarPartida(string nombreJugador, int nivel) {
       texto->trap();
 
       textoRaw->setTexto(string("???: Soy JOSUE, el GUIA JAGUAR!"));
-      texto->reconstruir(textoRaw, 25, &sonidoUI, 50);
+      texto->reconstruir(textoRaw, 25, &sonidoUI, 25);
       texto->trap();
 
       textoRaw->setTexto(string("- Parece que te quedaste dormido en esa banca...  Dejame adivinar, Progra 2?"));
-      texto->reconstruir(textoRaw, 25, &sonidoUI, 50);
+      texto->reconstruir(textoRaw, 25, &sonidoUI, 25);
       texto->trap();
 
       textoRaw->setTexto(string("- Si, lo se, la ultima semana es bastante dura    El proyecto del INGENIERO OSMAN no es nada facil"));
-      texto->reconstruir(textoRaw, 25, &sonidoUI, 50);
+      texto->reconstruir(textoRaw, 25, &sonidoUI, 25);
       texto->trap();
 
       textoRaw->setTexto(string("- Como lo se? Yo tambien estudio SISTEMAS!"));
-      texto->reconstruir(textoRaw, 25, &sonidoUI, 75);
+      texto->reconstruir(textoRaw, 25, &sonidoUI, 25);
       texto->trap();
 
       textoRaw->setTexto(string("- Tu eres " + nombreJugador + " no?"));
-      texto->reconstruir(textoRaw, 25, &sonidoUI, 50);
+      texto->reconstruir(textoRaw, 25, &sonidoUI, 25);
       texto->trap();
 
       textoRaw->setTexto(string("- Es todo un placer conocerte!"));
-      texto->reconstruir(textoRaw, 25, &sonidoUI, 50);
+      texto->reconstruir(textoRaw, 25, &sonidoUI, 25);
       texto->trap();
 
       textoRaw->setTexto(string("- Me caes bien. Ven, te dare algunos tips para    que domines ese proyecto!"));
-      texto->reconstruir(textoRaw, 25, &sonidoUI, 50);
+      texto->reconstruir(textoRaw, 25, &sonidoUI, 25);
       texto->trap();
       this_thread::sleep_for(chrono::milliseconds(500));
 
@@ -786,7 +786,7 @@ void Runner::iniciarPartida(string nombreJugador, int nivel) {
       soul->centrar();
 
       textoRaw->setTexto(string("Este corazon representa a tu FUERZA DE VOLUNTAD   Es todo aquello que te impulsa a seguir adelante."));
-      texto->reconstruir(textoRaw, 25, &sonidoUI, 50);
+      texto->reconstruir(textoRaw, 25, &sonidoUI, 25);
       tablero->setVisible(true);
       tablero2->setVisible(true);
       Imagen black("./assets/screens/black.png");
@@ -809,7 +809,7 @@ void Runner::iniciarPartida(string nombreJugador, int nivel) {
 
       texto->setVisible(false);
       textoRaw->setTexto(string("- Vamos, muevete un poco! Has de estar entumecido por dormir ahi."));
-      texto->reconstruir(textoRaw, 25, &sonidoUI, 50);
+      texto->reconstruir(textoRaw, 25, &sonidoUI, 25);
       texto->setVisible(true);
       texto->iniciar();
       while (texto->isActivo()) {
@@ -819,7 +819,7 @@ void Runner::iniciarPartida(string nombreJugador, int nivel) {
 
       texto->setVisible(false);
       textoRaw->setTexto(string("- Mientras mas grande sea tu FUERZA DE VOLUNTAD   mas facil te sera vencer tus obstaculos!"));
-      texto->reconstruir(textoRaw, 25, &sonidoUI, 50);
+      texto->reconstruir(textoRaw, 25, &sonidoUI, 25);
       texto->setVisible(true);
       texto->iniciar();
       while (texto->isActivo()) {
@@ -829,7 +829,7 @@ void Runner::iniciarPartida(string nombreJugador, int nivel) {
 
       texto->setVisible(false);
       textoRaw->setTexto(string("- Como haces a tu FUERZA DE VOLUNTAD mas grande?  Con esferas de amistad, por supuesto!"));
-      texto->reconstruir(textoRaw, 25, &sonidoUI, 50);
+      texto->reconstruir(textoRaw, 25, &sonidoUI, 25);
       texto->setVisible(true);
       texto->iniciar();
       while (texto->isActivo()) {
@@ -839,7 +839,7 @@ void Runner::iniciarPartida(string nombreJugador, int nivel) {
 
       texto->setVisible(false);
       textoRaw->setTexto(string("- Ten, tengo unas para ti. Agarra todas las que   puedas!"));
-      texto->reconstruir(textoRaw, 25, &sonidoUI, 50);
+      texto->reconstruir(textoRaw, 25, &sonidoUI, 25);
       texto->setVisible(true);
       texto->iniciar();
 
@@ -859,6 +859,7 @@ void Runner::iniciarPartida(string nombreJugador, int nivel) {
       ataque->interrumpir();
       Mix_HaltMusic();
       Mix_HaltChannel(-1);
+      texto->setVisible(false);
       this_thread::sleep_for(chrono::milliseconds(5000));
 
       escenario.setFondo(Imagen("./assets/screens/batallaTutorial2.png"));
@@ -874,7 +875,7 @@ void Runner::iniciarPartida(string nombreJugador, int nivel) {
       this_thread::sleep_for(chrono::milliseconds(3000));
 
       texto->setVisible(false);
-      textoRaw->setTexto(string("- De verdad que eres muy iluso."));
+      textoRaw->setTexto(string("- De verdad que eres muy ingenuo."));
       texto->reconstruir(textoRaw, 25, &sonidoMalvado, 100);
       texto->setVisible(true);
       texto->iniciar();
@@ -885,7 +886,7 @@ void Runner::iniciarPartida(string nombreJugador, int nivel) {
 
       texto->setVisible(false);
       textoRaw->setTexto(string("- En este mundo NADIE te va a ayudar.             Estas completamente SOLO."));
-      texto->reconstruir(textoRaw, 25, &sonidoMalvado, 50);
+      texto->reconstruir(textoRaw, 25, &sonidoMalvado, 25);
       texto->setVisible(true);
       texto->iniciar();
       while (texto->isActivo()) {
@@ -895,7 +896,7 @@ void Runner::iniciarPartida(string nombreJugador, int nivel) {
 
       texto->setVisible(false);
       textoRaw->setTexto(string("- Otro estudiante de SISTEMAS, otro nino tonto    que piensa que puede llegar a ser alguien."));
-      texto->reconstruir(textoRaw, 25, &sonidoMalvado, 50);
+      texto->reconstruir(textoRaw, 25, &sonidoMalvado, 25);
       texto->setVisible(true);
       texto->iniciar();
       while (texto->isActivo()) {
@@ -938,7 +939,7 @@ void Runner::iniciarPartida(string nombreJugador, int nivel) {
 
       texto->setVisible(false);
       textoRaw->setTexto(string("- Nos vemos!"));
-      texto->reconstruir(textoRaw, 25, &sonidoMalvado, 50);
+      texto->reconstruir(textoRaw, 25, &sonidoMalvado, 25);
       texto->setVisible(true);
       texto->iniciar();
       while (texto->isActivo()) {
@@ -1094,11 +1095,11 @@ void Runner::iniciarPartida(string nombreJugador, int nivel) {
 
         switch (menuBatalla->trap()) {
           case 2:{
-            textoSecundario->trap();
             texto->setVisible(false);
-            textoRawSec->setTexto(string("ING OSMAN MEJIA - 25 ATK / 5 DEF                 No puedes ni verlo a la cara por los nervios."));
             textoSecundario->setVisible(true);
+            textoRawSec->setTexto(string("ING OSMAN MEJIA - 25 ATK / 5 DEF                  No puedes ni verlo a la cara por los nervios."));
             textoSecundario->reconstruir(textoRawSec, 25, &sonidoUI, 75);
+            textoSecundario->trap();
             textoSecundario->setVisible(false);
             break;
           }
@@ -1202,18 +1203,24 @@ void Runner::gameOver() {
   Musica gameOv("./assets/musica/gameOver.wav");
   gameOv.reproducir();
   this_thread::sleep_for(chrono::milliseconds(7000));
+  exit(0);
   run();
 }
 
 void Runner::gameWon() {
-  this_thread::sleep_for(chrono::milliseconds(1000));
+  Mix_HaltMusic();
   Escenario escenario;
+
+  escenario.setFondo(Imagen("./assets/screens/black.png"));
+
+  this_thread::sleep_for(chrono::milliseconds(1000));
   escenario.setFondo(Imagen("./assets/screens/gameWon.png"));
 
   pantalla->setEscenario(&escenario);
   Musica gameOv("./assets/musica/gameWon.wav");
   gameOv.reproducir();
   this_thread::sleep_for(chrono::milliseconds(7000));
+  exit(0);
   run();
 }
 

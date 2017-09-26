@@ -13,7 +13,7 @@ Sonido::Sonido(string nRuta){
 
 bool Sonido::reproducir() {
   if (Mix_PlayChannel(-1, sonido, 0) == -1) {
-    std::cout << "[SONIDO] Error al reproducir sonido cargado de " << ruta << '\n';
+    //std::cout << "[SONIDO] Error al reproducir sonido cargado de " << ruta << '\n';
     return false;
   }
 
@@ -70,4 +70,3 @@ void Sonido::liberar() {
 Sonido::~Sonido(){
   Mix_FreeChunk(sonido);
 }
-

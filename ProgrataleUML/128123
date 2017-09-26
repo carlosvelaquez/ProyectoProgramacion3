@@ -1,6 +1,6 @@
 format 214
 "Proyecto" // Proyecto
-  revision 1
+  revision 2
   modified_by 123 "imado"
   // class settings
   
@@ -6933,7 +6933,169 @@ ${inlines}
 
     classdiagram 128123 "ClassDiag"
       classdiagramsettings member_max_width 0 end
-      size D
+      size 3364x4756
+    end
+
+    objectdiagram 134651 "ObjectDiag"
+      objectdiagramsettings end
+      size A4
+    end
+
+    classinstance 128123 "runner"
+      type class_ref 130555 // Runner
+      attributes
+        end
+      relations
+        end
+    end
+
+    classinstance 128251 "menus"
+      type class_ref 130299 // Menu
+      attributes
+        end
+      relations
+        end
+    end
+
+    classinstance 128379 "sonidos"
+      type class_ref 129659 // Sonido
+      attributes
+        end
+      relations
+        end
+    end
+
+    class 137467 "main"
+      visibility package 
+      cpp_decl "${comment}${template}class ${name}${inherit} {
+${members}};
+${inlines}
+"
+      java_decl ""
+      php_decl ""
+      python_2_2 python_decl ""
+      idl_decl ""
+      explicit_switch_type ""
+      mysql_decl ""
+      
+    end
+
+    classinstance 128507 "main"
+      type class_ref 137467 // main
+      attributes
+        end
+      relations
+        end
+    end
+
+    classinstance 128635 "pantalla"
+      type class_ref 130427 // Pantalla
+      attributes
+        end
+      relations
+        end
+    end
+
+    classinstance 128763 "escenario"
+      type class_ref 129787 // Escenario
+      attributes
+        end
+      relations
+        end
+    end
+
+    class 137595 "SDL_Surface"
+      visibility package 
+      cpp_decl "${comment}${template}class ${name}${inherit} {
+${members}};
+${inlines}
+"
+      java_decl ""
+      php_decl ""
+      python_2_2 python_decl ""
+      idl_decl ""
+      explicit_switch_type ""
+      mysql_decl ""
+      
+    end
+
+    classinstance 128891 "superficie"
+      type class_ref 137595 // SDL_Surface
+      attributes
+        end
+      relations
+        end
+    end
+
+    class 137723 "int"
+      visibility package 
+      cpp_decl "${comment}${template}class ${name}${inherit} {
+${members}};
+${inlines}
+"
+      java_decl ""
+      php_decl ""
+      python_2_2 python_decl ""
+      idl_decl ""
+      explicit_switch_type ""
+      mysql_decl ""
+      
+    end
+
+    classinstance 129019 "altura"
+      type class_ref 137723 // int
+      attributes
+        end
+      relations
+        end
+    end
+
+    classinstance 129147 "anchura"
+      type class_ref 137723 // int
+      attributes
+        end
+      relations
+        end
+    end
+
+    classinstance 129275 "hud"
+      type class_ref 129915 // HUD
+      attributes
+        end
+      relations
+        end
+    end
+
+    classinstance 129403 "espacio"
+      type class_ref 130043 // Espacio
+      attributes
+        end
+      relations
+        end
+    end
+
+    classinstance 129531 "elementos"
+      type class_ref 128763 // ElementoGUI
+      attributes
+        end
+      relations
+        end
+    end
+
+    classinstance 129659 "props"
+      type class_ref 130171 // Prop
+      attributes
+        end
+      relations
+        end
+    end
+
+    classinstance 129787 "Runner"
+      type class_ref 130555 // Runner
+      attributes
+        end
+      relations
+        end
     end
   end
 

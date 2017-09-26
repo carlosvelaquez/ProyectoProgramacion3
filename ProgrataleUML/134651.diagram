@@ -1,0 +1,83 @@
+format 214
+
+classinstancecanvas 128123 classinstance_ref 128123 // runner
+  xyz 34 74 2000
+end
+classinstancecanvas 128251 classinstance_ref 128251 // menus
+  xyz 45 134 2005
+end
+classinstancecanvas 128379 classinstance_ref 128379 // sonidos
+  xyz 79 186 2010
+end
+classinstancecanvas 128763 classinstance_ref 128507 // main
+  xyz 45 18 2000
+end
+classinstancecanvas 129019 classinstance_ref 128635 // pantalla
+  xyz 174 133 2000
+end
+classinstancecanvas 129403 classinstance_ref 128763 // escenario
+  xyz 295 68 2000
+end
+classinstancecanvas 129659 classinstance_ref 128891 // superficie
+  xyz 331 210 2000
+end
+classinstancecanvas 129915 classinstance_ref 129019 // altura
+  xyz 231 197 2000
+end
+classinstancecanvas 130171 classinstance_ref 129147 // anchura
+  xyz 192 224 2000
+end
+classinstancecanvas 130555 classinstance_ref 129275 // hud
+  xyz 434 69 2000
+end
+classinstancecanvas 130683 classinstance_ref 129403 // espacio
+  xyz 364 106 2000
+end
+classinstancecanvas 131067 classinstance_ref 129531 // elementos
+  xyz 513 160 2000
+end
+classinstancecanvas 131195 classinstance_ref 129659 // props
+  xyz 377 141 2000
+end
+objectlinkcanvas 128507 norel
+  decenter_end 419
+  from ref 128123 z 2006 to ref 128251
+  no_role_a no_role_b
+objectlinkcanvas 128635 norel
+  decenter_begin 94
+  from ref 128379 z 2011 to ref 128251
+  no_role_a no_role_b
+objectlinkcanvas 128891 norel
+  from ref 128763 z 2001 to ref 128123
+  no_role_a no_role_b
+objectlinkcanvas 129147 norel
+  from ref 128123 z 2001 to ref 129019
+  no_role_a no_role_b
+objectlinkcanvas 129531 norel
+  decenter_begin 910
+  from ref 129019 z 2001 to ref 129403
+  no_role_a no_role_b
+objectlinkcanvas 129787 norel
+  from ref 129019 z 2001 to ref 129659
+  no_role_a no_role_b
+objectlinkcanvas 130299 norel
+  from ref 129019 z 2001 to ref 129915
+  no_role_a no_role_b
+objectlinkcanvas 130427 norel
+  from ref 129019 z 2001 to ref 130171
+  no_role_a no_role_b
+objectlinkcanvas 130811 norel
+  from ref 129403 z 2001 to ref 130555
+  no_role_a no_role_b
+objectlinkcanvas 130939 norel
+  decenter_end 90
+  from ref 129403 z 2001 to ref 130683
+  no_role_a no_role_b
+objectlinkcanvas 131323 norel
+  from ref 130683 z 2001 to ref 131195
+  no_role_a no_role_b
+objectlinkcanvas 131451 norel
+  decenter_end 62
+  from ref 130555 z 2001 to ref 131067
+  no_role_a no_role_b
+end

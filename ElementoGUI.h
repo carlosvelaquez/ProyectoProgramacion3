@@ -8,9 +8,7 @@ class ElementoGUI {
     int altura=  0;
     int posicionX=  0;
     int posicionY=  0;
-
     bool visible;
-
 
   public:
     int getAnchura();
@@ -26,6 +24,6 @@ class ElementoGUI {
     virtual void centrar();
     virtual void setVisible(bool nVisible);
     virtual bool isVisible();
-    virtual SDL_Surface * toSuperficie() = 0;
+    virtual SDL_Surface* toSuperficie() = 0;
     virtual bool refrescar() = 0;
 };
